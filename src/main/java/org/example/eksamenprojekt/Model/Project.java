@@ -30,6 +30,7 @@ public class Project {
 
     public String getName() {
         return name;
+        System.out.println("hej");
     }
 
     public void setName(String name) {
