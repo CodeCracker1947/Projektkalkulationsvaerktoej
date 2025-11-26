@@ -2,6 +2,7 @@ package org.example.eksamenprojekt.Repository;
 
 import org.example.eksamenprojekt.Model.Project;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
 
@@ -12,15 +13,18 @@ public class ProjectRepo {
 
     }
 
+    private RowMapper<Project> ProjectRowMapper = ((rs, rowNum) ->
+            new Project())
+
     public List<Project> findAll(){
 
     }
 
-    public int update(int id, Project updated){
+    public int update(int projectId, Project updated){
 
     }
 
-    public int delete(int id){
+    public int delete(int projectId){
 
     }
 
@@ -28,7 +32,11 @@ public class ProjectRepo {
 
     }
 
-    public Project findProjectById(int id){
+    public Project findAllByUserID(int userId){
+
+    }
+
+    public Project findProjectByProjectId(int projectId){
 
     }
 }

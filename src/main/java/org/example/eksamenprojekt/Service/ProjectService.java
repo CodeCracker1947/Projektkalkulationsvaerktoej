@@ -16,7 +16,7 @@ public class ProjectService {
 
     }
 
-    public Project getById(int id){
+    public Project getByProjectId(int projectId){
 
     }
 
@@ -24,11 +24,15 @@ public class ProjectService {
 
     }
 
-    public void delete(int id){
+    public Project updateProject(int projectId, Project updated){
 
     }
 
-    public List<Project> getAllProjectsByUser (int "project leader" id){
+    public void delete(int projectId){
+
+    }
+
+    public List<Project> getAllProjectsByUserId (int userId){
 
     }
 

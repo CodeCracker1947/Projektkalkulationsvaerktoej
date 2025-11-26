@@ -2,16 +2,16 @@ package org.example.eksamenprojekt.Model;
 
 import java.util.Date;
 
-public class Project {
+public class SubProject {
     private String name;
     private String description;
     private int userId;
-    private int projectId;
+    private int subProjectId;
     private Date deadline;
     private double estimatedHour;
 
-    public Project(int projectId, int userId, String name, String description, Date deadline, double estimatedHour){
-        this.projectId = projectId;
+    public SubProject(int subProjectId, int userId, String name, String description, Date deadline, double estimatedHour){
+        this.subProjectId = subProjectId;
         this.userId = userId;
         this.name = name;
         this.description = description;
@@ -19,14 +19,14 @@ public class Project {
         this.estimatedHour = estimatedHour;
     }
 
-    public Project(String name, String description, Date deadline, double estimatedHour){
+    public SubProject(String name, String description, Date deadline, double estimatedHour){
         this.name = name;
         this.description = description;
         this.deadline = deadline;
         this.estimatedHour = estimatedHour;
     }
 
-    public Project(){
+    public SubProject(){
 
     }
 
@@ -47,12 +47,12 @@ public class Project {
     }
 
 
-    public int getProjectId() {
-        return projectId;
+    public int getSubProjectId() {
+        return subProjectId;
     }
 
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
+    public void setSubProjectId(int SubProjectId) {
+        this.subProjectId = SubProjectId;
     }
 
     public int getUserId() {

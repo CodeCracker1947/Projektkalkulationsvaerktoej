@@ -1,14 +1,14 @@
 package org.example.eksamenprojekt.Model;
 
 public class User {
-    private int id;
+    private int userId;
     private String name;
-    private String role;
+    private Role role;
     private String email;
     private String password;
 
-    public User(int id, String name, String role, String email, String password){
-        this.id = id;
+    public User(int userId, String name, Role role, String email, String password){
+        this.userId = userId;
         this.name = name;
         this.role = role;
         this.email = email;
@@ -16,7 +16,7 @@ public class User {
 
     }
 
-    public User(String name, String role, String email, String password){
+    public User(String name, Role role, String email, String password){
         this.name = name;
         this.role = role;
         this.email = email;
@@ -28,11 +28,11 @@ public class User {
     }
 
     public int getId(){
-        return id;
+        return userId;
     }
 
     public void setId(int id){
-        this.id = id;
+        this.userId = userId;
     }
 
     public String getName(){
@@ -43,11 +43,11 @@ public class User {
         this.name = name;
     }
 
-    public String getRole(){
+    public Role getRole(){
         return role;
     }
 
-    public void setRole(String role){
+    public void setRole(Role role){
         this.role = role;
     }
 
