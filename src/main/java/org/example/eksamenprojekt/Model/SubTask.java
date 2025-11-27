@@ -8,7 +8,7 @@ public class SubTask {
     private double estimatedHours;
     private Status status;
 
-    private SubTask(int subTaskId, int userId, String name, String description, double estimatedHours, Status status){
+    public SubTask(int subTaskId, int userId, String name, String description, double estimatedHours, Status status){
         this.subTaskId = subTaskId;
         this.userId = userId;
         this.name = name;
@@ -18,7 +18,7 @@ public class SubTask {
 
     }
 
-    private SubTask(String name, String description, double estimatedHours, Status status){
+    public SubTask(String name, String description, double estimatedHours, Status status){
         this.name = name;
         this.description = description;
         this.estimatedHours = estimatedHours;
@@ -26,7 +26,7 @@ public class SubTask {
 
     }
 
-    private SubTask(){
+    public SubTask(){
 
     }
 

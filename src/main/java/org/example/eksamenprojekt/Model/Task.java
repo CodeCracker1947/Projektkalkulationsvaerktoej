@@ -11,25 +11,25 @@ public class Task {
     private Date deadline;
     private Status status;
 
-    private Task(int taskId, int userId, String name, String description, double estimatedHours, Date deadline, Status status){
+    public Task(int taskId, int userId, String name, String description, Date deadline, double estimatedHours, Status status){
         this.taskId = taskId;
         this.userId = userId;
         this.name = name;
         this.description = description;
-        this.estimatedHours = estimatedHours;
         this.deadline = deadline;
+        this.estimatedHours = estimatedHours;
         this.status = status;
     }
 
-    private Task(String name, String description, double estimatedHours, Date deadline, Status status){
+    public Task(String name, String description, Date deadline, double estimatedHours, Status status){
         this.name = name;
         this.description = description;
-        this.estimatedHours = estimatedHours;
         this.deadline = deadline;
+        this.estimatedHours = estimatedHours;
         this.status = status;
     }
 
-    private Task(){
+    public Task(){
 
     }
 
