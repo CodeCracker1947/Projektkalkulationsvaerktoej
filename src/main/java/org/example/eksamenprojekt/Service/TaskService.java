@@ -13,26 +13,26 @@ public class TaskService {
     }
 
     public List<Task> getAll(){
-
+    return repository.findAll();
     }
 
     public Task getByTaskId(int taskId){
-
+    return repository.findTaskByTaskId(taskId);
     }
 
     public void addTask(Task Model){
-
+    repository.save(Model);
     }
 
-    public Task updateTask(int taskId, Task updated){
-
+    public void updateTask(int taskId, Task updated){
+    repository.update(taskId, updated);
     }
 
     public void delete(int taskId){
-
+    repository.delete(taskId);
     }
 
     public List<Task> getAllTaskByUserId (int userId){
-
+    return repository.findAllByUserID(userId);
     }
 }

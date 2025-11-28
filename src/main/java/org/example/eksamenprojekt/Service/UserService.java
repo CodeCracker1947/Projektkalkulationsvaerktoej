@@ -4,29 +4,37 @@ import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Repository.UserRepo;
 
 public class UserService {
-    private final UserRepo Repository;
+    private final UserRepo repository;
 
     public UserService(UserRepo repository){
-        this.Repository = repository;
+        this.repository = repository;
     }
 
-    public User registerUser(User user){
-
+    public User registerUser(User user) {
+        if (repository.avaliableUserName(user.getName())) {
+            throw new IllegalArgumentException("Brugernavnet findes allerede");
+        }
+        if (repository.avaliableEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Emailen er allerede i brug");
+        }
+        return repository.save(user);
     }
 
     public boolean login(String name, String password){
-
+    User user = repository.findByUsername(name);
+    if (user == null) return false;
+    return user.getPassword().equals(password);
     }
 
     public User getUsername(String name){
-
+    return repository.findByUsername(name);
     }
 
     public User getEmail(String email){
-
+    return repository.findByEmail(email);
     }
 
-    public User getById(int id){
-
+    public User getById(int userId){
+    return repository.findByUserId(userId);
     }
 }

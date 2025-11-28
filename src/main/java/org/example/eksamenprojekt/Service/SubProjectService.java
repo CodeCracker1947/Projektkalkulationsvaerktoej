@@ -13,26 +13,26 @@ public class SubProjectService {
     }
 
     public List<SubProject> getAll(){
-
+    return repository.findAll();
     }
 
     public SubProject getBySubProjectId(int subProjectId){
-
+    return repository.findSubProjectBySubProjectId(subProjectId);
     }
 
     public void addSubProject(SubProject Model){
-
+    repository.save(Model);
     }
 
-    public SubProject updateSubProject(int subProjectId, SubProject updated){
-
+    public void updateSubProject(int subProjectId, SubProject updated){
+    repository.update(subProjectId, updated);
     }
 
     public void delete(int subProjectId){
-
+    repository.delete(subProjectId);
     }
 
     public List<SubProject> getAllSubProjectsByUserId (int userId){
-
+    return repository.findAllByUserID(userId);
     }
 }

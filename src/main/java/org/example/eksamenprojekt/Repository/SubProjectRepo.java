@@ -73,7 +73,7 @@ public class SubProjectRepo {
     }
 
     public SubProject findSubProjectBySubProjectId(int subProjectId){
-    String sql = "select * Subproject where Subproject_ID=?";
+    String sql = "select * from Subproject where Subproject_ID=?";
     return jdbcTemplate.queryForObject(sql, subProjectRowMapper, subProjectId);
     }
 

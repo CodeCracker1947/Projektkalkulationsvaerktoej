@@ -13,27 +13,27 @@ public class ProjectService {
     }
 
     public List<Project> getAll(){
-
+    return repository.findAll();
     }
 
     public Project getByProjectId(int projectId){
-
+    return repository.findProjectByProjectId(projectId);
     }
 
     public void addProject(Project Model){
-
+    repository.save(Model);
     }
 
-    public Project updateProject(int projectId, Project updated){
-
+    public void updateProject(int projectId, Project updated){
+    repository.update(projectId, updated);
     }
 
     public void delete(int projectId){
-
+    repository.delete(projectId);
     }
 
     public List<Project> getAllProjectsByUserId (int userId){
-
+    return repository.findAllByUserID(userId);
     }
 
 

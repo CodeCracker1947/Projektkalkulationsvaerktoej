@@ -12,27 +12,27 @@ public class SubTaskService {
         this.repository = repository;
     }
     public List<SubTask> getAll(){
-
+    return repository.findAll();
     }
 
     public SubTask getBySubTaskId(int subTaskId){
-
+    return repository.findSubTaskBySubTaskId(subTaskId);
     }
 
     public void addSubTask(SubTask Model){
-
+    repository.save(Model);
     }
 
-    public SubTask updateSubTask(int subTaskId, SubTask updated){
-
+    public void updateSubTask(int subTaskId, SubTask updated){
+    repository.update(subTaskId, updated);
     }
 
     public void delete(int subTaskId){
-
+    repository.delete(subTaskId);
     }
 
     public List<SubTask> getAllSubTaskByUserId (int userId){
-
+    return repository.findAllByUserID(userId);
     }
 
 }
