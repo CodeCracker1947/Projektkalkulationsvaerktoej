@@ -17,7 +17,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register (ModelAttribute User user, HttpSession session, Model model){
+    public String register (@ModelAttribute User user, HttpSession session, Model model){
         try {
             User newUser = service.registerUser(user);
             session.setAttribute("userId", newUser.getId());

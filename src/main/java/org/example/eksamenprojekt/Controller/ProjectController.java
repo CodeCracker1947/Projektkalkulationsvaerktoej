@@ -36,8 +36,6 @@ public class ProjectController {
         model.addAttribute("new_project", new Project());
 
         return "projects";
-
-
     }
 
     @PostMapping("/add")

@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+}
+
+form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+label {
+    font-weight: bold;
+}
+/* Full page background */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    width: 100vw;
+    background: url('/static/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Buttons at top corners */
+.header-buttons {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* left = login, right = register */
+}
+
+.header-buttons .btn {
+    padding: 10px 20px;
+    background-color: rgba(0, 123, 255, 0.8);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.header-buttons .btn:hover {
+    background-color: rgba(0, 90, 200, 0.9);
+}
+
+/* Logo in center */
+.logo-container {
+    flex: 1; /* takes remaining vertical space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
+
+.logo-container img {
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+.logo-container h1 {
+    font-size: 2.5rem;
+}
+

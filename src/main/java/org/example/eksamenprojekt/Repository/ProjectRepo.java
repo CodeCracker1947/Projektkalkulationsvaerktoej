@@ -3,9 +3,11 @@ package org.example.eksamenprojekt.Repository;
 import org.example.eksamenprojekt.Model.Project;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class ProjectRepo {
     private final JdbcTemplate jdbcTemplate;
     public ProjectRepo(JdbcTemplate jdbcTemplate){

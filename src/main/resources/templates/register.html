@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>registrer en bruger</title>
+    <link rel="stylesheet" href="/static/main.css" th:href="@{/main.css}">
+</head>
+<body>
+    <h2>Opret en ny bruger</h2>
+
+    <form th:action="@{/register}" method="post">
+        <label>Brugernavn:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Password:</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <label>Gentag Password:</label><br>
+        <input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
+
+        <label>Vælg rolle:</label><br>
+
+        <input type="radio" id="dev" name="role" value="DEVELOPER" required>
+        <label for="dev">Udvikler</label><br>
+
+        <input type="radio" id="leader" name="role" value="PROJECT_LEADER">
+        <label for="leader">Projektleder</label><br><br>
+
+
+
+        <button type="submit">Opret bruger</button>
+    </form>
+
+    <p>Har du allerede en konto?
+        <a href=/login" th:href="@{/login}">Log ind her</a>
+    </p>
+
+    <p th:if="${error}" th:text="${error}" style="color:red"></p>
+    <p th:if="${success}" th:text="${success}" style="color:green"></p>
+
+</body>
+</html>

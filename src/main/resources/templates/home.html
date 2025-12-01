@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>hjemmeside</title>
+    <link rel="stylesheet" href="/static/main.css" th:href="@{/main.css}">
+</head>
+<body>
+<div class="header-buttons">
+    <a class="btn" href="/login" th:href="@{/login}">Log ind</a>
+    <a class="btn" href="/register" th:href="@{/register}">Register</a>
+</div>
+
+<div class="logo-container">
+    <img src="/static/logo.png" alt="Logo">
+    <h1>Velkommen til dit projekt værktøj</h1>
+</div>
+</body>
+</html>
