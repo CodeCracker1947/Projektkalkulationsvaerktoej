@@ -1,15 +1,11 @@
 package org.example.eksamenprojekt.Repository;
 
 import org.example.eksamenprojekt.Model.Role;
-import org.example.eksamenprojekt.Model.Status;
 import org.example.eksamenprojekt.Model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
@@ -65,23 +61,14 @@ public class UserRepo {
 
     }
 
-    public User save(User user){
-        String sql = "insert into Employee (Employee_Id, Name, Email, Password, Role) values (?,?,?,?,?)";
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"Employee_Id"});
-            ps.setString(1, user.getName());
-            ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
-            //ps.setString(4, user.getRole());
-            return ps;
-        }, keyHolder);
-
-        int generateID = keyHolder.getKey().intValue();
-        user.setId(generateID);
-
-        return user;
+    public User save(User user) {
+        String sql = "insert into * Employee (Employee_Id, Name, Email, Password, Role) values (?,?,?,?,?)";
+        return jdbcTemplate.update(sql,
+                user.getUserId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole()
+        );
     }
 }

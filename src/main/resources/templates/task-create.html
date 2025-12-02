@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Opret en opgave</title>
+  <link rel="stylesheet" href="/static/main.css" th:href="@{/main.css}">
+</head>
+<body>
+<h1>Tilføj en opgave</h1>
+
+<section>
+  <form th:action="@{/subprojects/{subprojectId}/tasks/create(subprojectId=${task.subprojectId})}" th:object="${new_task}" method="post">
+    <label>Opgavens title:</label><br>
+    <input type="text" th:field="*{name}" placeholder="Skriv opgavens title" required><br><br>
+
+    <label>Beskrivelse:</label><br>
+    <textarea th:field="*{description}" placeholder="Skriv en kort beskrivelse"></textarea> <br><br>
+
+    <label>Deadline:</label><br>
+    <input type="date" th:field="*{deadline}" required><br><br>
+
+    <label>Estimerede tidsforbrug :</label><br>
+    <input type="number" th:field="*{estimatedHours}" step="0.5" required> <span>timer</span><br><br>
+
+    <button type="submit"> Opret opgave </button><br><br>
+
+  </form>
+
+  <a th:href="@{/subprojects/{subprojectId}(subprojectId=${task.subprojectId})}">Tilbage til delopgaven</a>
+</section>
+
+<p th:if="${success}" th:text="${success}" style="color: green"></p>
+
+
+
+</body>
+</html>

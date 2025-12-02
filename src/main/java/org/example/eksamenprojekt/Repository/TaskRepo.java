@@ -4,11 +4,12 @@ import org.example.eksamenprojekt.Model.Status;
 import org.example.eksamenprojekt.Model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Locale;
-
+@Repository
 public class TaskRepo {
     private final JdbcTemplate jdbcTemplate;
 
@@ -18,6 +19,7 @@ public class TaskRepo {
 
     private RowMapper<Task> taskRowMapper = (rs, rowNum) ->
             new Task (
+                    rs.getInt("Subproject_Id"),
                     rs.getInt("Task_Id"),
                     rs.getInt("Employee_Id"),
                     rs.getString("Name"),
@@ -52,8 +54,9 @@ public class TaskRepo {
     }
 
     public int save(Task task){
-        String sql = "insert into Task (Task_Id, Employee_Id, Name, Description, Deadline, EstimatedHours, Status) values(?,?,?,?,?,?,?)";
+        String sql = "insert into Task (Subproject_Id, Task_Id, Employee_Id, Name, Description, Deadline, EstimatedHours, Status) values(?,?,?,?,?,?,?)";
         return jdbcTemplate.update(sql,
+                task.getSubProjectId(),
                 task.getTaskId(),
                 task.getUserId(),
                 task.getName(),
@@ -68,6 +71,7 @@ public class TaskRepo {
         String sql = "select * from Task where Employee_Id =?";
         RowMapper<Task> rowMapper = (rs, rowNum) -> {
             Task t = new Task();
+            t.setSubProjectId(rs.getInt("Subproject_Id"));
             t.setTaskId(rs.getInt("Task_Id"));
             t.setUserId(rs.getInt("User_Id"));
             t.setName(rs.getString("name"));

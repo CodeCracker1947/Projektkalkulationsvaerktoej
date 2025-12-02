@@ -2,9 +2,10 @@ package org.example.eksamenprojekt.Service;
 
 import org.example.eksamenprojekt.Model.SubTask;
 import org.example.eksamenprojekt.Repository.SubTaskRepo;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class SubTaskService {
     private final SubTaskRepo repository;
 

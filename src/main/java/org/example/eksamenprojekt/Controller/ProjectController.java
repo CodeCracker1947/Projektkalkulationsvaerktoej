@@ -16,12 +16,12 @@ import java.util.Objects;
 
 @Controller
 public class ProjectController {
-    private final ProjectService service;
     private final UserService userService;
+    private final ProjectService projectService;
 
-    public ProjectController (ProjectService service, UserService userService){
-        this.service = service;
+    public ProjectController ( UserService userService, ProjectService projectService){
         this.userService = userService;
+        this.projectService = projectService;
     }
 
     @GetMapping("/projects")
@@ -32,25 +32,28 @@ public class ProjectController {
         User user = userService.getByUserId(userId);
 
         model.addAttribute("username", user.getName());
-        model.addAttribute("projects", service.getAllProjectsByUserId(userId));
+        model.addAttribute("projects", projectService.getAllProjectsByUserId(userId));
         model.addAttribute("new_project", new Project());
 
         return "projects";
     }
 
-    @PostMapping("/add")
-    public String addProject(HttpSession session, @ModelAttribute Project project){
-        Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) return "redirect:/login";
-
-        project.setUserId(userId);
-        service.addProject(project);
-        return "redirect:/project";
+    @GetMapping("/projects/create")
+    public String showCreateProjectForm(Model model) {
+        model.addAttribute("new_project", new Project());
+        return "project-create";
     }
+
+    @PostMapping("project/create")
+    public String createProject(@ModelAttribute Project project) {
+        projectService.addProject(project);
+        return "redirect:/projects";
+    }
+
 
     @GetMapping("/project/{projectId}/update")
     public String updateProject(@PathVariable int projectId, Model model){
-        model.addAttribute("project", service.getByProjectId(projectId));
+        model.addAttribute("project", projectService.getByProjectId(projectId));
         return "update";
     }
 
@@ -59,9 +62,9 @@ public class ProjectController {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";
 
-        Project existingProject = service.getByProjectId(model.getProjectId());
+        Project existingProject = projectService.getByProjectId(model.getProjectId());
         if (Objects.equals(existingProject.getUserId(), userId)) {
-            service.updateProject(model.getProjectId(), model);
+            projectService.updateProject(model.getProjectId(), model);
         }
 
         return "redirect:/projects";
@@ -71,9 +74,9 @@ public class ProjectController {
     public String deleteProject(@PathVariable int projectId, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
 
-        Project project = service.getByProjectId(projectId);
+        Project project = projectService.getByProjectId(projectId);
         if (Objects.equals(project.getUserId(), userId)) {
-            service.delete(projectId);
+            projectService.delete(projectId);
         }
         return "redirect:/projects";
     }

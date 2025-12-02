@@ -20,7 +20,7 @@ public class UserController {
     public String register (@ModelAttribute User user, HttpSession session, Model model){
         try {
             User newUser = service.registerUser(user);
-            session.setAttribute("userId", newUser.getId());
+            session.setAttribute("userId", newUser.getUserId());
             return "redirect:/projects";
         } catch (IllegalArgumentException e) {
             model.addAttribute("registerError", e.getMessage());
@@ -37,7 +37,7 @@ public class UserController {
 
         if (service.login(username, password)) {
             User user = service.getUsername(username);
-            session.setAttribute("userId", user.getId());
+            session.setAttribute("userId", user.getUserId());
             return "redirect:/projects";
         } else {
             model.addAttribute("loginError", "Brugernavn eller password er forkert");

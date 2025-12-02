@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Task {
     private String name;
+    private int subProjectId;
     private int taskId;
     private int userId;
     private String description;
@@ -11,7 +12,8 @@ public class Task {
     private Date deadline;
     private Status status;
 
-    public Task(int taskId, int userId, String name, String description, Date deadline, double estimatedHours, Status status){
+    public Task(int subProjectId, int taskId, int userId, String name, String description, Date deadline, double estimatedHours, Status status){
+       this.subProjectId = subProjectId;
         this.taskId = taskId;
         this.userId = userId;
         this.name = name;
@@ -39,6 +41,13 @@ public class Task {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public int getSubProjectId() {
+        return subProjectId;
+    }
+
+    public void setSubProjectId(int subProjectId) {
+        this.subProjectId = subProjectId;
     }
 
     public int getTaskId() {

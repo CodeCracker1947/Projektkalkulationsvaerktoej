@@ -1,15 +1,10 @@
-CREATE DATABASE IF NOT EXISTS ProjectTool;
-USE ProjectTool;
-
 DROP TABLE IF EXISTS Subtask;
 DROP TABLE IF EXISTS EmployeeTask;
 DROP TABLE IF EXISTS Task;
-DROP TABLE IF EXISTS Subproject;
 DROP TABLE IF EXISTS EmployeeProject;
+DROP TABLE IF EXISTS Subproject;
 DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS project;
-
-
 
 CREATE TABLE Project (
                          Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -77,5 +72,3 @@ CREATE TABLE Subtask (
                          Status ENUM('ToDo', 'InProgress', 'Done') DEFAULT 'ToDo',
                          FOREIGN KEY (Task_Id) REFERENCES Task(Id) ON DELETE CASCADE
 );
-
-

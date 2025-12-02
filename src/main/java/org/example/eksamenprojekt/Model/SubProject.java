@@ -6,11 +6,13 @@ public class SubProject {
     private String name;
     private String description;
     private int userId;
+    private int projectId;
     private int subProjectId;
     private Date deadline;
     private double estimatedHour;
 
-    public SubProject(int subProjectId, int userId, String name, String description, Date deadline, double estimatedHour){
+    public SubProject(int projectId, int subProjectId, int userId, String name, String description, Date deadline, double estimatedHour){
+        this.projectId = projectId;
         this.subProjectId = subProjectId;
         this.userId = userId;
         this.name = name;
@@ -27,7 +29,6 @@ public class SubProject {
     }
 
     public SubProject(){
-
     }
 
     public String getName() {
@@ -46,6 +47,13 @@ public class SubProject {
         this.description = description;
     }
 
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
 
     public int getSubProjectId() {
         return subProjectId;

@@ -4,9 +4,10 @@ package org.example.eksamenprojekt.Repository;
 import org.example.eksamenprojekt.Model.SubProject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class SubProjectRepo {
     private final JdbcTemplate jdbcTemplate;
 
@@ -16,6 +17,7 @@ public class SubProjectRepo {
 
     private RowMapper<SubProject> subProjectRowMapper = (rs, rowNum) ->
             new SubProject(
+                    rs.getInt("Project_Id"),
                     rs.getInt("Subproject_Id"),
                     rs.getInt("Employee_Id"),
                     rs.getString("Name"),
@@ -46,8 +48,9 @@ public class SubProjectRepo {
     }
 
     public int save(SubProject subProject){
-    String sql = "insert into Subproject (Subproject_Id, Employee_ID, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?,?)";
+    String sql = "insert into Subproject (Project_Id, Subproject_Id, Employee_ID, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?,?)";
     return jdbcTemplate.update(sql,
+            subProject.getProjectId(),
             subProject.getSubProjectId(),
             subProject.getUserId(),
             subProject.getName(),
@@ -61,6 +64,7 @@ public class SubProjectRepo {
         String sql = "select * from Subproject where Employee_Id=?";
         RowMapper<SubProject> rowMapper = (rs, rowNum) -> {
             SubProject sp = new SubProject();
+            sp.setProjectId(rs.getInt("Project_Id"));
                     sp.setSubProjectId(rs.getInt("Subproject_Id"));
                     sp.setUserId(rs.getInt("Employee_Id"));
                     sp.setName(rs.getString("Name"));

@@ -2,13 +2,15 @@ package org.example.eksamenprojekt.Model;
 
 public class SubTask {
     private String name;
+    private int taskId;
     private int subTaskId;
     private int userId;
     private String description;
     private double estimatedHours;
     private Status status;
 
-    public SubTask(int subTaskId, int userId, String name, String description, double estimatedHours, Status status){
+    public SubTask(int taskId, int subTaskId, int userId, String name, String description, double estimatedHours, Status status){
+        this.taskId = taskId;
         this.subTaskId = subTaskId;
         this.userId = userId;
         this.name = name;
@@ -36,6 +38,14 @@ public class SubTask {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 
     public int getSubTaskId() {
