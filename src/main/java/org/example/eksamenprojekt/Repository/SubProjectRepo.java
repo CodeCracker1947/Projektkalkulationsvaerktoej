@@ -48,11 +48,9 @@ public class SubProjectRepo {
     }
 
     public int save(SubProject subProject){
-    String sql = "insert into Subproject (Project_Id, Subproject_Id, Employee_ID, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?,?)";
+    String sql = "insert into Subproject (Project_Id, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?)";
     return jdbcTemplate.update(sql,
             subProject.getProjectId(),
-            subProject.getSubProjectId(),
-            subProject.getUserId(),
             subProject.getName(),
             subProject.getDescription(),
             subProject.getDeadline(),
@@ -61,19 +59,19 @@ public class SubProjectRepo {
     }
 
     public List<SubProject> findAllByUserID(int userId){
-        String sql = "select * from Subproject where Employee_Id=?";
-        RowMapper<SubProject> rowMapper = (rs, rowNum) -> {
+        String sql = "select * from Subproject where Project_Id in (Select Project_Id from EmployeeProject where Employee_Id=?)";
+
+
+        return jdbcTemplate.query(sql,(rs, rowNum) -> {
             SubProject sp = new SubProject();
-            sp.setProjectId(rs.getInt("Project_Id"));
-                    sp.setSubProjectId(rs.getInt("Subproject_Id"));
-                    sp.setUserId(rs.getInt("Employee_Id"));
+                    sp.setSubProjectId(rs.getInt("Id"));
+                    sp.setProjectId(rs.getInt("Project_Id"));
                     sp.setName(rs.getString("Name"));
                     sp.setDescription(rs.getString("Description"));
                     sp.setDeadline(rs.getDate("Deadline"));
                     sp.setEstimatedHour(rs.getDouble("EstimatedHours"));
                     return sp;
-        };
-        return  jdbcTemplate.query(sql, rowMapper, userId);
+        }, userId);
     }
 
     public SubProject findSubProjectBySubProjectId(int subProjectId){

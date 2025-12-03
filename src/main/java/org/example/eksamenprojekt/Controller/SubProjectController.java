@@ -2,6 +2,7 @@ package org.example.eksamenprojekt.Controller;
 
 
 import jakarta.servlet.http.HttpSession;
+import org.example.eksamenprojekt.Model.Role;
 import org.example.eksamenprojekt.Model.SubProject;
 import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Service.SubProjectService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -27,30 +29,32 @@ public class SubProjectController {
 
     @GetMapping("/subprojects")
     public String showSubProjects(HttpSession session, Model model){
-        Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) return "redirect:/login";
+        int userId = (Integer) session.getAttribute("userId");
 
-        User user = userService.getByUserId(userId);
-
-        model.addAttribute("username", user.getName());
-        model.addAttribute("subprojects", subProjectService.getAllSubProjectsByUserId(userId));
-        model.addAttribute("new_subproject", new SubProject());
-
+        List<SubProject> subProjects = subProjectService.getAllSubProjectsByUserId(userId);
+        model.addAttribute("subprojects", subProjects);
         return "subprojects";
     }
 
     @GetMapping("/projects/{projectId}/subprojects/create")
-    public String showCreateSubProjectForm(@PathVariable int projectId, Model model) {
-        SubProject subProject = new SubProject();
-        subProject.setProjectId(projectId);
-        model.addAttribute("new_subproject", subProject);
+    public String showCreateSubProjectForm(HttpSession session, Model model) {
+        Role role = (Role) session.getAttribute("Role");
+        if (!"PROJECT_LEADER".equals(role)){
+            return "redirect:/subprojects";
+        }
+        model.addAttribute("new_subproject", new SubProject());
         return "subproject-create";
     }
 
     @PostMapping("/projects/{projectId}/subprojects/create")
-    public String createSubProject(@ModelAttribute SubProject subProject) {
+    public String createSubProject(@ModelAttribute SubProject subProject, HttpSession session) {
+        Role role = (Role) session.getAttribute("Role");
+        if (!"PROJECT_LEADER".equals(role)) {
+            return "redirect:/subprojects";
+        }
+
         subProjectService.addSubProject(subProject);
-        return "redirect:/projects/" + subProject.getProjectId();
+        return "redirect:/subprojects";
     }
 
     @GetMapping("/subprojects/{subprojectId}")
@@ -78,7 +82,7 @@ public class SubProjectController {
     }
 
 
-    @PostMapping("/delete/{subprojectId")
+    @PostMapping("/delete/{subprojectId}")
     public String deleteSubProject(@PathVariable int subProjectId, HttpSession session){
         Integer userId = (Integer) session.getAttribute("userId");
 
@@ -86,7 +90,6 @@ public class SubProjectController {
         if (Objects.equals(subProject.getUserId(), userId)) {
             subProjectService.delete(subProjectId);
         }
-
         return "redirect:/subprojects";
     }
 }

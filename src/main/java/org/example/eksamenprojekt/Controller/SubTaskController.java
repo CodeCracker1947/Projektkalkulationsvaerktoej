@@ -1,6 +1,7 @@
 package org.example.eksamenprojekt.Controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.eksamenprojekt.Model.Role;
 import org.example.eksamenprojekt.Model.SubTask;
 import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Service.SubTaskService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -26,30 +28,30 @@ public class SubTaskController {
 
     @GetMapping("subtasks")
     public String showSubtasks(HttpSession session, Model model){
-        Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) return "redirect:/login";
+        int userId = (Integer) session.getAttribute("userId");
 
-        User user = userService.getByUserId(userId);
-
-        model.addAttribute("username", user.getName());
-        model.addAttribute("subtasks", subTaskService.getAllSubTaskByUserId(userId));
-        model.addAttribute("new_subtask", new SubTask());
-
+        List<SubTask> subTasks = subTaskService.getAllSubTaskByUserId(userId);
+        model.addAttribute("subtasks", subTasks);
         return "subtasks";
     }
 
     @GetMapping("/tasks/{taskId}/subtasks/create")
-    public String showCreateSubtaskForm(@PathVariable int taskId, Model model){
-        SubTask subTask = new SubTask();
-        subTask.setTaskId(taskId);
-        model.addAttribute("new_subtask", subTask);
+    public String showCreateSubtaskForm(HttpSession session, Model model){
+       Role role = (Role) session.getAttribute("Role");
+       if (!"PROJECT_LEADER".equals(role)) {
+           return "redirect:/subtasks";
+       }
+        model.addAttribute("new_subtask", new SubTask());
         return "subtask-create";
     }
 
     @PostMapping("/tasks{taskId}/subtasks/create")
-    public String createSubtask(@ModelAttribute SubTask subTask) {
-        subTaskService.addSubTask(subTask);
-        return "redirect:/tasks/" + subTask.getTaskId();
+    public String createSubtask(@ModelAttribute SubTask subTask, HttpSession session) {
+        Role role = (Role) session.getAttribute("Role");
+        if (!"PROJECT_LEADER".equals(role)) {
+            return "redirect:/subtasks";
+        }
+        return "redirect:/subtasks";
     }
 
     @GetMapping("/subtask/{subtaskId}/update")
@@ -71,7 +73,7 @@ public class SubTaskController {
        return "redirect:subtasks";
     }
 
-    @PostMapping("/delete/{subprojectId}")
+    @PostMapping("/delete/{subtaskId}")
     public String deleteSubTask(@PathVariable int subprojectId, HttpSession session){
         Integer userId = (Integer) session.getAttribute("userId");
 

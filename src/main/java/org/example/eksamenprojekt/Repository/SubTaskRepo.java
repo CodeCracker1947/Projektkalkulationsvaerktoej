@@ -46,12 +46,11 @@ public class SubTaskRepo {
     return jdbcTemplate.update(sql, subTaskId);
     }
 
+    // Subtask_Id, Employee_Id
     public int save(SubTask subTask) {
-        String sql = "insert into Subtask (Task_Id, Subtask_Id, Employee_Id, Name, Description, EstimatedHours, Status) values (?,?,?,?,?,?)";
+        String sql = "insert into Subtask (Task_Id, Name, Description, EstimatedHours, Status) values (?,?,?,?,?)";
         return jdbcTemplate.update(sql,
                 subTask.getTaskId(),
-                subTask.getSubTaskId(),
-                subTask.getUserId(),
                 subTask.getName(),
                 subTask.getDescription(),
                 subTask.getEstimatedHours(),
@@ -60,19 +59,19 @@ public class SubTaskRepo {
     }
 
     public List<SubTask> findAllByUserID(int userId) {
-        String sql = "select * from Subtask where Employee_Id=?";
-        RowMapper<SubTask> rowMapper = (rs, rowNum) -> {
+        String sql = "select * from Subtask where Task_Id in (select Task_Id from EmployeeTask where Employee_Id=?)";
+
+
+        return jdbcTemplate.query(sql,(rs, rowNum) -> {
             SubTask st = new SubTask();
+            st.setSubTaskId(rs.getInt("Id"));
             st.setTaskId(rs.getInt("Task_Id"));
-            st.setSubTaskId(rs.getInt("Subtask_Id"));
-            st.setUserId(rs.getInt("Employee_Id"));
             st.setName(rs.getString("Name"));
             st.setDescription(rs.getString("Description"));
             st.setEstimatedHours(rs.getDouble("EstimatedHours"));
             st.setStatus(Status.valueOf(rs.getString("Status").toUpperCase()));
             return st;
-        };
-        return jdbcTemplate.query(sql, rowMapper, userId);
+        }, userId);
     }
 
     public SubTask findSubTaskBySubTaskId(int subTaskId){

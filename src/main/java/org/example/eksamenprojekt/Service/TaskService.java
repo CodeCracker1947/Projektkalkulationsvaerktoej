@@ -21,8 +21,8 @@ public class TaskService {
     return repository.findTaskByTaskId(taskId);
     }
 
-    public void addTask(Task Model){
-    repository.save(Model);
+    public void addTask(Task task){
+    repository.save(task);
     }
 
     public void updateTask(int taskId, Task updated){

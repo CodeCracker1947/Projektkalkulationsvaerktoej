@@ -7,5 +7,33 @@
 </head>
 <body>
 
+<h1>Hej <span th:text="${username}"></span></h1>
+<h2>Dine projekter</h2>
+
+<a href="/project/create"> + Opret nyt project</a>
+
+<table>
+    <tr>
+        <th>Projekt Navn</th>
+        <th>Estimerede Timer</th>
+        <th>Deadline</th>
+        <th>Handlinger</th>
+    </tr>
+
+    <tr th:each="project : ${projects}">
+        <td th:text="${project.name}"></td>
+        <td th:text="${project.estimatedHour}"></td>
+        <td th:text="${project.deadline}"></td>
+
+        <td>
+            <a th:href="@{/projects/{id}(id=${project.projectId})}">Se delprojekter</a> |
+            <a th:href="@{/projects/{id}/update(id=${project.projectId})}">Rediger</a> |
+            <form th:action="@{/delete/{id}(id=${project.projectId)})" method="post" style="display:inline;">
+                <button type="submit">Slet</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
 </body>
 </html>

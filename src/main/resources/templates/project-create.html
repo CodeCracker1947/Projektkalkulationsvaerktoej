@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Opret nyt projekt</title>
@@ -8,7 +8,9 @@
 <body>
 <h1>Opret nyt projekt</h1>
 
-<section>
+<div class="form-container">
+
+<section class="create-section">
   <form th:action="@{/project/create}" th:object="${new_project}" method="post">
       <label>Projekt navn:</label><br>
       <input type="text" th:field="*{name}" placeholder="Skriv projektets navn" required><br><br>
@@ -26,6 +28,23 @@
 
   </form>
 </section>
+
+<section class="assign-section">
+    <form th:action="@{/projects/{id}/assign(id=${projectId)})" method="post">
+          <label>Vælg medarbejder</label>
+          <select name="userId">
+              <option th:each="emp : ${employees}"
+                      th:value="${emp.userId}"
+                      th:text="${emp.name}">
+              </option>
+          </select>
+
+        <button type="submit">Tildel</button>
+    </form>
+    <a th:href="/projects">Tilbage</a>
+</section>
+
+</div>
 
 <p th:if="${success}" th:text="${success}" style="color: green"></p>
 

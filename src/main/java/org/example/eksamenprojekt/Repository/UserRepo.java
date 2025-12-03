@@ -62,13 +62,15 @@ public class UserRepo {
     }
 
     public User save(User user) {
-        String sql = "insert into * Employee (Employee_Id, Name, Email, Password, Role) values (?,?,?,?,?)";
-        return jdbcTemplate.update(sql,
+        String sql = "insert into Employee (Employee_Id, Name, Email, Password, Role) values (?,?,?,?,?)";
+        jdbcTemplate.update(sql,
                 user.getUserId(),
                 user.getName(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getRole()
         );
+        String sql2 = "select * from Employee where Email=?";
+        return jdbcTemplate.queryForObject(sql2, userRowMapper, user.getEmail());
     }
 }

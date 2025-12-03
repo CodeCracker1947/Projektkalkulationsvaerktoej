@@ -1,6 +1,7 @@
 package org.example.eksamenprojekt.Controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.eksamenprojekt.Model.Role;
 import org.example.eksamenprojekt.Model.Task;
 import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Service.TaskService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -26,31 +28,32 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public String showTasks(HttpSession session, Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) return "redirect:/login";
+        int userId = (Integer) session.getAttribute("userId");
 
-        User user = userService.getByUserId(userId);
-
-        model.addAttribute("username", user.getName());
-        model.addAttribute("tasks", taskService.getAllTaskByUserId(userId));
-        model.addAttribute("new_tasks", new Task());
-
+        List<Task> tasks = taskService.getAllTaskByUserId(userId);
+        model.addAttribute("tasks", tasks);
         return "tasks";
     }
 
     @GetMapping("/subprojects/{subprojectId}/tasks/create")
-    public String showCreateTaskForm(@PathVariable int subprojectId, Model model){
-        Task task = new Task();
-        task.setSubProjectId(subprojectId);
-        model.addAttribute("new_task", task);
+    public String showCreateTaskForm(HttpSession session, Model model){
+        Role role = (Role) session.getAttribute("Role");
+        if (!"PROJECT_LEADER".equals(role)) {
+            return "redirect:/tasks";
+        }
+        model.addAttribute("new_task", new Task());
         return "task-create";
 
     }
 
     @PostMapping("/subprojects/{subprojectId}/tasks/create")
-    public String createTask(@ModelAttribute Task task) {
+    public String createTask(@ModelAttribute Task task, HttpSession session) {
+        Role role = (Role) session.getAttribute("Role");
+        if (!"PROJECT_LEADER".equals(role)) {
+            return "redirect:/tasks";
+        }
         taskService.addTask(task);
-        return "redirect:/subprojects/" + task.getSubProjectId();
+        return "redirect:/tasks";
     }
 
     @GetMapping("/tasks{taskId}")

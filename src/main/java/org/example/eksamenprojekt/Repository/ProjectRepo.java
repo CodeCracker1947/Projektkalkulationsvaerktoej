@@ -1,6 +1,7 @@
 package org.example.eksamenprojekt.Repository;
 
 import org.example.eksamenprojekt.Model.Project;
+import org.example.eksamenprojekt.Model.Role;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -47,11 +48,10 @@ public class ProjectRepo {
     return jdbcTemplate.update(sql, projectId);
     }
 
+    // vi har slettet Project_Id, Employee_Id, fra vores args)
     public int save(Project project){
-        String sql = "insert into * Project (Project_Id, Employee_Id, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?,?)";
+        String sql = "insert into Project (Name, Description, Deadline, EstimatedHours) values (?,?,?,?)";
         return jdbcTemplate.update(sql,
-                project.getProjectId(),
-                project.getUserId(),
                 project.getName(),
                 project.getDescription(),
                 project.getDeadline(),
@@ -61,18 +61,17 @@ public class ProjectRepo {
     }
 
     public List<Project> findAllByUserID(int userId){
-        String sql = "select * from Project where Employee_Id =?";
-        RowMapper<Project> rowMapper = (rs, rowNum) -> {
+        String sql = "select * from Project where Id in(select project_Id from EmployeeProject where Employee_Id=?)";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Project p = new Project();
-            p.setProjectId(rs.getInt("Project_Id"));
-            p.setUserId(rs.getInt("Employee_Id"));
+            p.setProjectId(rs.getInt("Id"));
             p.setName(rs.getString("Name"));
             p.setDescription(rs.getString("Description"));
             p.setDeadline(rs.getDate("Deadline"));
             p.setEstimatedHour(rs.getDouble("EstimatedHours"));
             return p;
-        };
-        return jdbcTemplate.query(sql, rowMapper, userId);
+        }, userId);
     }
 
     public Project findProjectByProjectId(int projectId){

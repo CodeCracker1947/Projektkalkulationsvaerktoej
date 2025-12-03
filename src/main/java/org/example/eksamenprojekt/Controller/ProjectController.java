@@ -2,6 +2,7 @@ package org.example.eksamenprojekt.Controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.eksamenprojekt.Model.Project;
+import org.example.eksamenprojekt.Model.Role;
 import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Service.ProjectService;
 import org.example.eksamenprojekt.Service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -27,29 +29,37 @@ public class ProjectController {
     @GetMapping("/projects")
     public String showProjects(HttpSession session, Model model){
         Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) return "redirect:/login";
+        Role role = (Role) session.getAttribute("role");
 
-        User user = userService.getByUserId(userId);
+        List<Project> projects = projectService.getAllProjectsByUserId(userId);;
 
-        model.addAttribute("username", user.getName());
-        model.addAttribute("projects", projectService.getAllProjectsByUserId(userId));
-        model.addAttribute("new_project", new Project());
-
+        model.addAttribute("projects", projects);
+        model.addAttribute("role", role);
         return "projects";
     }
 
     @GetMapping("/projects/create")
-    public String showCreateProjectForm(Model model) {
-        model.addAttribute("new_project", new Project());
+    public String showCreateProjectForm(HttpSession session, Model model) {
+        String role = (String) session.getAttribute("role");
+
+         if (!"PROJECT_LEADER".equals(role)){
+             return "redirect:/project";
+         }
+         model.addAttribute("new_project", new Project());
         return "project-create";
     }
 
     @PostMapping("project/create")
-    public String createProject(@ModelAttribute Project project) {
-        projectService.addProject(project);
-        return "redirect:/projects";
-    }
+    public String createProject(@ModelAttribute Project project, HttpSession session) {
+        String role = (String) session.getAttribute("role");
 
+        if (!"PROJECT_LEADER".equals(role)){
+            return "redirect:/project";
+        }
+
+        projectService.addProject(project);
+        return "project-create";
+    }
 
     @GetMapping("/project/{projectId}/update")
     public String updateProject(@PathVariable int projectId, Model model){

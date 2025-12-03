@@ -52,13 +52,11 @@ public class TaskRepo {
         return jdbcTemplate.update(sql, taskId);
 
     }
-
+        // slettet Task_Id og Employee_Id fra String sql
     public int save(Task task){
-        String sql = "insert into Task (Subproject_Id, Task_Id, Employee_Id, Name, Description, Deadline, EstimatedHours, Status) values(?,?,?,?,?,?,?)";
+        String sql = "insert into Task (Subproject_Id, Name, Description, Deadline, EstimatedHours, Status) values(?,?,?,?,?,?)";
         return jdbcTemplate.update(sql,
                 task.getSubProjectId(),
-                task.getTaskId(),
-                task.getUserId(),
                 task.getName(),
                 task.getDescription(),
                 task.getDeadline(),
@@ -66,22 +64,22 @@ public class TaskRepo {
                 task.getStatus()
         );
     }
-
+        // ændret "select * from Task where Employee_Id=?"
     public List<Task> findAllByUserID(int userId) {
-        String sql = "select * from Task where Employee_Id =?";
-        RowMapper<Task> rowMapper = (rs, rowNum) -> {
+        String sql = "select * from Task where Id in (select Task_Id from EmployeeTask where Employee_Id=?)";
+
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Task t = new Task();
+            t.setTaskId(rs.getInt("Id"));
             t.setSubProjectId(rs.getInt("Subproject_Id"));
-            t.setTaskId(rs.getInt("Task_Id"));
-            t.setUserId(rs.getInt("User_Id"));
-            t.setName(rs.getString("name"));
+            t.setName(rs.getString("Name"));
             t.setDescription(rs.getString("Description"));
             t.setDeadline(rs.getDate("Deadline"));
             t.setEstimatedHours(rs.getDouble("EstimatedHours"));
             t.setStatus(Status.valueOf(rs.getString("Status").toUpperCase()));
             return t;
-        };
-        return jdbcTemplate.query(sql, rowMapper, userId);
+        }, userId);
     }
 
 

@@ -39,7 +39,7 @@ button:hover {
 label {
     font-weight: bold;
 }
-/* Full page background */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -51,12 +51,12 @@ body {
     flex-direction: column;
 }
 
-/* Buttons at top corners */
+
 .header-buttons {
     width: 100%;
     padding: 20px;
     display: flex;
-    justify-content: space-between; /* left = login, right = register */
+    justify-content: space-between;
 }
 
 .header-buttons .btn {
@@ -73,9 +73,9 @@ body {
     background-color: rgba(0, 90, 200, 0.9);
 }
 
-/* Logo in center */
+
 .logo-container {
-    flex: 1; /* takes remaining vertical space */
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -93,4 +93,17 @@ body {
 .logo-container h1 {
     font-size: 2.5rem;
 }
+.form-container {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
 
+.create-section,
+.assign-section {
+    flex: 1;
+}
+
+.assign-section form {
+    margin-top: 0;
+}

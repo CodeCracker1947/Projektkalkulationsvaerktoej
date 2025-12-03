@@ -38,6 +38,7 @@ public class UserController {
         if (service.login(username, password)) {
             User user = service.getUsername(username);
             session.setAttribute("userId", user.getUserId());
+            session.setAttribute("role", user.getRole());
             return "redirect:/projects";
         } else {
             model.addAttribute("loginError", "Brugernavn eller password er forkert");

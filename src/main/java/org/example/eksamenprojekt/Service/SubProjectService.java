@@ -21,8 +21,8 @@ public class SubProjectService {
     return repository.findSubProjectBySubProjectId(subProjectId);
     }
 
-    public void addSubProject(SubProject Model){
-    repository.save(Model);
+    public void addSubProject(SubProject subProject){
+    repository.save(subProject);
     }
 
     public void updateSubProject(int subProjectId, SubProject updated){
