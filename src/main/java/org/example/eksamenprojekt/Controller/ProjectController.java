@@ -49,7 +49,7 @@ public class ProjectController {
 
         String role = (String) session.getAttribute("role");
          if (!"PROJECT_LEADER".equals(role)){
-             return "redirect:/project";
+             return "redirect:/projects";
          }
          model.addAttribute("new_project", new Project());
         return "project-create";
@@ -60,7 +60,7 @@ public class ProjectController {
         String role = (String) session.getAttribute("role");
 
         if (!"PROJECT_LEADER".equals(role)){
-            return "redirect:/project";
+            return "redirect:/projects";
         }
 
         projectService.addProject(project);

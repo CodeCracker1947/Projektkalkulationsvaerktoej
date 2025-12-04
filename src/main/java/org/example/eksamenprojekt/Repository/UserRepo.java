@@ -18,7 +18,7 @@ public class UserRepo {
 
     private RowMapper<User> userRowMapper = (rs, rowNum) ->
             new User(
-                    rs.getInt("Employee_Id"),
+                    rs.getInt("Id"),
                     rs.getString("Name"),
                     rs.getString("Email"),
                     rs.getString("Password"),
@@ -55,20 +55,19 @@ public class UserRepo {
     }
 
     public User findByUserId(int userId){
-        String sql = "select * from Employee where Employee_Id";
+        String sql = "select * from Employee where Id";
         List<User> users = jdbcTemplate.query(sql, userRowMapper, userId);
         return users.isEmpty() ? null : users.get(0);
 
     }
 
     public User save(User user) {
-        String sql = "insert into Employee (Employee_Id, Name, Email, Password, Role) values (?,?,?,?,?)";
+        String sql = "insert into Employee (Name, Email, Password, Role) values (?,?,?,?)";
         jdbcTemplate.update(sql,
-                user.getUserId(),
                 user.getName(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRole()
+                user.getRole().name()
         );
         String sql2 = "select * from Employee where Email=?";
         return jdbcTemplate.queryForObject(sql2, userRowMapper, user.getEmail());
