@@ -60,7 +60,7 @@ public class SubTaskController {
         return "update";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/subtask/{subtaskId}/update")
     public String saveUpdate(@ModelAttribute SubTask model, HttpSession session){
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";

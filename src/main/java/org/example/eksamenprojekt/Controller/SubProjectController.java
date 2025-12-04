@@ -4,7 +4,6 @@ package org.example.eksamenprojekt.Controller;
 import jakarta.servlet.http.HttpSession;
 import org.example.eksamenprojekt.Model.Role;
 import org.example.eksamenprojekt.Model.SubProject;
-import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Service.SubProjectService;
 import org.example.eksamenprojekt.Service.UserService;
 import org.springframework.stereotype.Controller;
@@ -69,7 +68,7 @@ public class SubProjectController {
         return "update";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/project/{projectId}/subprojects/update")
     public String saveUpdate(@ModelAttribute SubProject model, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";

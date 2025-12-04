@@ -7,6 +7,8 @@ public class User {
     private String email;
     private String password;
 
+    private transient String confirmPassword;
+
     public User(int userId, String name, String email, String password, Role role){
         this.userId = userId;
         this.name = name;
@@ -50,6 +52,12 @@ public class User {
     public void setRole(Role role){
         this.role = role;
     }
+    //når vi laver ny bruger, skal springboot kunne læse enums som en string og give role.delevoper (feks.)
+    public void setRole(String role) {
+        if (role != null) {
+            this.role = Role.valueOf(role);
+        }
+    }
 
     public String getEmail(){
         return email;
@@ -65,5 +73,13 @@ public class User {
 
     public void setPassword(String password){
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

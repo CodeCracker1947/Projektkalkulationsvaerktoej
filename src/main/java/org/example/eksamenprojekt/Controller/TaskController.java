@@ -68,7 +68,7 @@ public class TaskController {
         return "update";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/task/{taskId}/update")
     public String saveUpdate(@ModelAttribute Task model, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";

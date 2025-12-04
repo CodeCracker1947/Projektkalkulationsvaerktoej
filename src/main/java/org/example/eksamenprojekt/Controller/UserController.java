@@ -18,6 +18,10 @@ public class UserController {
 
     @PostMapping("/register")
     public String register (@ModelAttribute User user, HttpSession session, Model model){
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            model.addAttribute("registerError", "Passwords do not match!");
+            return "register";
+        }
         try {
             User newUser = service.registerUser(user);
             session.setAttribute("userId", newUser.getUserId());
@@ -25,9 +29,7 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             model.addAttribute("registerError", e.getMessage());
             return "register";
-
         }
-
     }
 
     @PostMapping("/login")

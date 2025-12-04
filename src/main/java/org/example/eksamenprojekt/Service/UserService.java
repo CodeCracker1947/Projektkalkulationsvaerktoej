@@ -19,7 +19,7 @@ public class UserService {
         if (repository.avaliableEmail(user.getEmail())) {
             throw new IllegalArgumentException("Emailen er allerede i brug");
         }
-        return repository.save(user);
+         return repository.save(user);
     }
 
     public boolean login(String name, String password){

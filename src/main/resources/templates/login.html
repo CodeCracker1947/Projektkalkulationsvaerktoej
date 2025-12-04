@@ -6,12 +6,11 @@
     <link rel="stylesheet" href="/static/main.css" th:href="@{/main.css}">
 </head>
 <body>
-
-<h2>Log ind på hjemmesiden</h2>
+    <h2>Log ind på hjemmesiden</h2>
 
     <form th:action="@{/login}" method="post">
         <label>Brugernavn:</label><br>
-        <input type="text" name="name" required><br><br>
+        <input type="text" name="username" required><br><br>
 
         <label>Password:</label><br>
         <input type="password" name="password" required><br><br>
@@ -20,7 +19,7 @@
     </form>
 
 <p>Har du ikke en konto?
-    <a href=/register" th:href="@{/register}">Opret bruger her</a>
+    <a href="/register" th:href="@{/register}">Opret bruger her</a>
 </p>
 </body>
 </html>

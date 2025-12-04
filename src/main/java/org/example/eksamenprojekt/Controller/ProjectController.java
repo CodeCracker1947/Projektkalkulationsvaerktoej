@@ -29,6 +29,9 @@ public class ProjectController {
     @GetMapping("/projects")
     public String showProjects(HttpSession session, Model model){
         Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
         Role role = (Role) session.getAttribute("role");
 
         List<Project> projects = projectService.getAllProjectsByUserId(userId);;
@@ -40,8 +43,11 @@ public class ProjectController {
 
     @GetMapping("/projects/create")
     public String showCreateProjectForm(HttpSession session, Model model) {
-        String role = (String) session.getAttribute("role");
+      Integer userId = (Integer) session.getAttribute("userId");
+      if (userId == null)
+          return "redirect:/login";
 
+        String role = (String) session.getAttribute("role");
          if (!"PROJECT_LEADER".equals(role)){
              return "redirect:/project";
          }
@@ -67,7 +73,7 @@ public class ProjectController {
         return "update";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/project/{projectId}/update")
     public String saveUpdate(@ModelAttribute Project model,HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";

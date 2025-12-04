@@ -23,7 +23,7 @@
 
         <label>Vælg rolle:</label><br>
 
-        <input type="radio" id="dev" name="role" value="DEVELOPER" required>
+        <input type="radio" id="dev" name="role" value="DEVELOPER">
         <label for="dev">Udvikler</label><br>
 
         <input type="radio" id="leader" name="role" value="PROJECT_LEADER">
@@ -35,10 +35,10 @@
     </form>
 
     <p>Har du allerede en konto?
-        <a href=/login" th:href="@{/login}">Log ind her</a>
+        <a href="/login" th:href="@{/login}">Log ind her</a>
     </p>
 
-    <p th:if="${error}" th:text="${error}" style="color:red"></p>
+    <p th:if="${registerError}" th:text="${registerError}" style="color:red"></p>
     <p th:if="${success}" th:text="${success}" style="color:green"></p>
 
 </body>
