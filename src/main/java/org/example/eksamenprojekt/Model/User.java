@@ -55,7 +55,7 @@ public class User {
     //når vi laver ny bruger, skal springboot kunne læse enums som en string og give role.delevoper (feks.)
     public void setRole(String role) {
         if (role != null) {
-            this.role = Role.valueOf(role);
+            this.role = Role.valueOf(role.toUpperCase());
         }
     }
 

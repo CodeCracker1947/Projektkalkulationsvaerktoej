@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Underopgave</title>
-    <link rel="stylesheet" href="/static/main.css" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/main.css}">
 </head>
 <body>
 <h1>Tilføj en underopgave</h1>
 
 <section>
-    <form th:action="@{/tasks/{taskId}/subtasks/create(taskId=${subtaskId.taskId})}" th:object="${new_subtask}" method="post">
+    <form th:action="@{/tasks/{taskId}/subtasks/create(taskId=${taskId})}" th:object="${new_subtask}" method="post">
         <label>Underopgavens title:</label><br>
         <input type="text" th:field="*{name}" placeholder="Skriv underopgavens title" required><br><br>
 
@@ -23,7 +23,7 @@
 
     </form>
 
-    <a th:href="@{/tasks/{taskId}(taskId=${subtask.taskId})}">Tilbage til delopgaven</a>
+    <a th:href="@{/tasks/{taskId}(taskId=${taskId})}">Tilbage til delopgaven</a>
 </section>
 
 <p th:if="${success}" th:text="${success}" style="color: green"></p>

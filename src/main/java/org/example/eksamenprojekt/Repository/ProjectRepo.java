@@ -18,7 +18,7 @@ public class ProjectRepo {
 
     private RowMapper<Project> ProjectRowMapper = (rs, rowNum) ->
             new Project(
-                    rs.getInt("Project_Id"),
+                    rs.getInt("Id"),
                     rs.getInt("Employee_Id"),
                     rs.getString("Name"),
                     rs.getString("Description"),
@@ -33,7 +33,7 @@ public class ProjectRepo {
     }
 
     public int update(int projectId, Project updated){
-    String sql = "update Project set Name=?, Description=?, Deadline=?, EstimatedHours=? where Project_Id=?";
+    String sql = "update Project set Name=?, Description=?, Deadline=?, EstimatedHours=? where Id=?";
     return jdbcTemplate.update(sql,
             updated.getName(),
             updated.getDescription(),
@@ -44,14 +44,14 @@ public class ProjectRepo {
     }
 
     public int delete(int projectId){
-    String sql = "delete from Project where Project_Id=?";
+    String sql = "delete from Project where Id=?";
     return jdbcTemplate.update(sql, projectId);
     }
 
     // vi har slettet Project_Id, Employee_Id, fra vores args)
-    public int save(Project project){
+    public void save(Project project){
         String sql = "insert into Project (Name, Description, Deadline, EstimatedHours) values (?,?,?,?)";
-        return jdbcTemplate.update(sql,
+        jdbcTemplate.update(sql,
                 project.getName(),
                 project.getDescription(),
                 project.getDeadline(),
@@ -75,7 +75,12 @@ public class ProjectRepo {
     }
 
     public Project findProjectByProjectId(int projectId){
-    String sql = "select * from Project where Project_Id=?";
+    String sql = "select * from Project where Id=?";
     return jdbcTemplate.queryForObject(sql, ProjectRowMapper, projectId);
+    }
+
+    public void assignEmployeeToProject(int projectId, int userId){
+        String sql = "insert into EmployeeProject(Employee_Id, Project_Id) values (?,?)";
+        jdbcTemplate.update(sql,projectId, userId);
     }
 }

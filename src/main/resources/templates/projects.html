@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mine projekter</title>
+    <link rel="stylesheet" href="/static/main.css" th:href="@{/main.css}">
 
 </head>
 <body>
@@ -10,7 +11,7 @@
 <h1>Hej <span th:text="${username}"></span></h1>
 <h2>Dine projekter</h2>
 
-<a href="/project/create"> + Opret nyt project</a>
+<a th:href="@{/project/create/{id}(id=${employees})}"> + Opret nyt project</a>
 
 <table>
     <tr>
@@ -28,7 +29,7 @@
         <td>
             <a th:href="@{/projects/{id}(id=${project.projectId})}">Se delprojekter</a> |
             <a th:href="@{/projects/{id}/update(id=${project.projectId})}">Rediger</a> |
-            <form th:action="@{/delete/{id}(id=${project.projectId)})" method="post" style="display:inline;">
+            <form th:action="@{/delete/{projectId}(projectId=${project.projectId})}" method="post" style="display:inline;">
                 <button type="submit">Slet</button>
             </form>
         </td>

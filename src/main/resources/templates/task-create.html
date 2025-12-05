@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Opret en opgave</title>
-  <link rel="stylesheet" href="/static/main.css" th:href="@{/main.css}">
+  <link rel="stylesheet" th:href="@{/main.css}">
 </head>
 <body>
 <h1>Tilføj en opgave</h1>
 
 <section>
-  <form th:action="@{/subprojects/{subprojectId}/tasks/create(subprojectId=${task.subprojectId})}" th:object="${new_task}" method="post">
+  <form th:action="@{/subprojects/{subprojectId}/tasks/create(subprojectId=${subprojectId})}" th:object="${new_task}" method="post">
     <label>Opgavens title:</label><br>
     <input type="text" th:field="*{name}" placeholder="Skriv opgavens title" required><br><br>
 
@@ -26,7 +26,7 @@
 
   </form>
 
-  <a th:href="@{/subprojects/{subprojectId}(subprojectId=${task.subprojectId})}">Tilbage til delopgaven</a>
+  <a th:href="@{/subprojects/{subprojectId}(subprojectId=${subprojectId})}">Tilbage til delopgaven</a>
 </section>
 
 <p th:if="${success}" th:text="${success}" style="color: green"></p>

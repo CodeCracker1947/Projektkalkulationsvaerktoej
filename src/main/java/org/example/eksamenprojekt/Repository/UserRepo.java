@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.security.PublicKey;
 import java.util.List;
 
 @Repository
@@ -55,7 +56,7 @@ public class UserRepo {
     }
 
     public User findByUserId(int userId){
-        String sql = "select * from Employee where Id";
+        String sql = "select * from Employee where Id=?";
         List<User> users = jdbcTemplate.query(sql, userRowMapper, userId);
         return users.isEmpty() ? null : users.get(0);
 
@@ -71,5 +72,18 @@ public class UserRepo {
         );
         String sql2 = "select * from Employee where Email=?";
         return jdbcTemplate.queryForObject(sql2, userRowMapper, user.getEmail());
+    }
+
+    public List<User> findAllEmployees() {
+        String sql = "select * from Employee where Role='DEVELOPER'";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            User u = new User();
+            u.setUserId(rs.getInt("Id"));
+            u.setName(rs.getString("Name"));
+            u.setEmail(rs.getString("Email"));
+            u.setPassword(rs.getString("Password"));
+            u.setRole(rs.getString("Role"));
+            return u;
+        });
     }
 }

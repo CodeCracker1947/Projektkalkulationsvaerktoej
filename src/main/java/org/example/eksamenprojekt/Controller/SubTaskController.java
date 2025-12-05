@@ -37,7 +37,7 @@ public class SubTaskController {
 
     @GetMapping("/tasks/{taskId}/subtasks/create")
     public String showCreateSubtaskForm(HttpSession session, Model model){
-       Role role = (Role) session.getAttribute("Role");
+       Role role = (Role) session.getAttribute("role");
        if (!"PROJECT_LEADER".equals(role)) {
            return "redirect:/subtasks";
        }
@@ -47,7 +47,7 @@ public class SubTaskController {
 
     @PostMapping("/tasks{taskId}/subtasks/create")
     public String createSubtask(@ModelAttribute SubTask subTask, HttpSession session) {
-        Role role = (Role) session.getAttribute("Role");
+        Role role = (Role) session.getAttribute("role");
         if (!"PROJECT_LEADER".equals(role)) {
             return "redirect:/subtasks";
         }

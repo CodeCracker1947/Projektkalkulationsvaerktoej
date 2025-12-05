@@ -22,8 +22,9 @@ public class ProjectService {
     return repository.findProjectByProjectId(projectId);
     }
 
-    public void addProject(Project project){
+    public Project addProject(Project project){
     repository.save(project);
+        return project;
     }
 
     public void updateProject(int projectId, Project updated){
@@ -36,5 +37,9 @@ public class ProjectService {
 
     public List<Project> getAllProjectsByUserId (int userId){
     return repository.findAllByUserID(userId);
+    }
+
+    public void assignEmployeeToProject(int projectId, int userId){
+        repository.assignEmployeeToProject(projectId, userId);
     }
 }

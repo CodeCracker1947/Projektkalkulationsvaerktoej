@@ -37,7 +37,7 @@ public class SubProjectController {
 
     @GetMapping("/projects/{projectId}/subprojects/create")
     public String showCreateSubProjectForm(HttpSession session, Model model) {
-        Role role = (Role) session.getAttribute("Role");
+        Role role = (Role) session.getAttribute("role");
         if (!"PROJECT_LEADER".equals(role)){
             return "redirect:/subprojects";
         }
@@ -47,13 +47,13 @@ public class SubProjectController {
 
     @PostMapping("/projects/{projectId}/subprojects/create")
     public String createSubProject(@ModelAttribute SubProject subProject, HttpSession session) {
-        Role role = (Role) session.getAttribute("Role");
+        Role role = (Role) session.getAttribute("role");
         if (!"PROJECT_LEADER".equals(role)) {
-            return "redirect:/subprojects";
+            return "redirect:/projects";
         }
 
         subProjectService.addSubProject(subProject);
-        return "redirect:/subprojects";
+        return "redirect:/projects";
     }
 
     @GetMapping("/subprojects/{subprojectId}")
@@ -77,7 +77,7 @@ public class SubProjectController {
         if (Objects.equals(existingSubProject.getUserId(), userId)); {
             subProjectService.updateSubProject(model.getSubProjectId(), model);
         }
-        return "redirect:/subprojects";
+        return "redirect:/projects";
     }
 
 
@@ -89,6 +89,6 @@ public class SubProjectController {
         if (Objects.equals(subProject.getUserId(), userId)) {
             subProjectService.delete(subProjectId);
         }
-        return "redirect:/subprojects";
+        return "redirect:/projects";
     }
 }

@@ -4,6 +4,8 @@ import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Repository.UserRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepo repository;
@@ -38,5 +40,8 @@ public class UserService {
 
     public User getByUserId(int userId){
     return repository.findByUserId(userId);
+    }
+    public List<User> getAllDevelopers() {
+        return repository.findAllEmployees();
     }
 }

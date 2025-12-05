@@ -37,7 +37,7 @@ public class TaskController {
 
     @GetMapping("/subprojects/{subprojectId}/tasks/create")
     public String showCreateTaskForm(HttpSession session, Model model){
-        Role role = (Role) session.getAttribute("Role");
+        Role role = (Role) session.getAttribute("role");
         if (!"PROJECT_LEADER".equals(role)) {
             return "redirect:/tasks";
         }
@@ -48,7 +48,7 @@ public class TaskController {
 
     @PostMapping("/subprojects/{subprojectId}/tasks/create")
     public String createTask(@ModelAttribute Task task, HttpSession session) {
-        Role role = (Role) session.getAttribute("Role");
+        Role role = (Role) session.getAttribute("role");
         if (!"PROJECT_LEADER".equals(role)) {
             return "redirect:/tasks";
         }
