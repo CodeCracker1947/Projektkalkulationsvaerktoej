@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mine projekter</title>
-    <link rel="stylesheet" href="/static/main.css" th:href="@{/main.css}">
+    <link rel="stylesheet" href="/static/project.css" th:href="@{/project.css}">
 
 </head>
 <body>
@@ -17,6 +17,7 @@
 <table>
     <tr>
         <th>Projekt Navn</th>
+        <th>Beskrivelse</th>
         <th>Estimerede Timer</th>
         <th>Deadline</th>
         <th>Handlinger</th>
@@ -24,15 +25,36 @@
 
     <tr th:each="project : ${projects}">
         <td th:text="${project.name}"></td>
+        <td th:text="${project.description}"></td>
         <td th:text="${project.estimatedHour}"></td>
         <td th:text="${project.deadline}"></td>
-
         <td>
             <a th:href="@{/projects/{projectId}/details(projectId=${project.projectId})}">Se delprojekter</a> |
-            <a th:href="@{/projects/{projectId}/update(projectId=${project.projectId})}">Rediger</a> |
+
             <form th:action="@{/projects/delete/{projectId}(projectId=${project.projectId})}" method="post" style="display:inline;">
-                <button type="submit">Slet</button>
-            </form>
+                <button type="submit" class="link-button" onclick="return confirm('Er du sikker på, at du vil slette projektet?')">Slet</button>
+            </form> |
+
+            <details style="display:inline;">
+                <summary class="edit-summary" style="cursor:pointer;"> Rediger</summary>
+
+                <form th:action="@{/projects/{projectId}/update(projectId=${project.projectId})}" method="post" style="margin-top:10px">
+
+                    <label>Navn</label>
+                    <input type="text" name="name" th:value="${project.name}" required>
+
+                    <label>Beskrivelse</label>
+                    <input type="text" name="description" th:value="${project.description}">
+
+                     <label>Deadline</label>
+                    <input type="date" name="deadline" th:value="${project.deadline}" required>
+
+                    <label>Estimerede timer</label>
+                    <input type="number" name="estimatedHour" th:value="${project.estimatedHour}" step="0.5" required>
+
+                    <button type="submit">Gem ændringer</button>
+                </form>
+            </details>
         </td>
     </tr>
 </table>

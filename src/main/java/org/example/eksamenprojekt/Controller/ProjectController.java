@@ -55,12 +55,11 @@ public class ProjectController {
       if (userId == null)
           return "redirect:/login";
 
-       /* Role role = (Role) session.getAttribute("role");
+       Role role = (Role) session.getAttribute("role");
          if (role != Role.PROJECT_LEADER){
-             return "redirect:/projects_create";
+             return "redirect:/projects";
          }
 
-        */
          model.addAttribute("new_project", new Project());
          model.addAttribute("employees", userService.getAllDevelopers());
         return "project-create";
@@ -152,13 +151,13 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/update")
-    public String saveUpdate(@ModelAttribute Project model,HttpSession session) {
+    public String saveUpdate(@PathVariable int projectId, @ModelAttribute Project model,HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";
 
-        Project existingProject = projectService.getByProjectId(model.getProjectId());
+        Project existingProject = projectService.getByProjectId(projectId);
         if (Objects.equals(existingProject.getUserId(), userId)) {
-            projectService.updateProject(model.getProjectId(), model);
+            projectService.updateProject(projectId, model);
         }
 
         return "redirect:/projects";

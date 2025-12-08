@@ -49,7 +49,7 @@ public class ProjectRepo {
     }
 
     // vi har slettet Project_Id, Employee_Id, fra vores args)
-    public void save(Project project){
+    public int save(Project project){
         String sql = "insert into Project (Employee_Id, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?)";
         jdbcTemplate.update(sql,
                 project.getUserId(),
@@ -58,7 +58,7 @@ public class ProjectRepo {
                 project.getDeadline(),
                 project.getEstimatedHour()
         );
-
+        return getLastInsertedProjectId();
     }
 
     public List<Project> findAllByUserID(int userId){

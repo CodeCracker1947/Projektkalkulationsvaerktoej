@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS project;
 
 CREATE TABLE Project (
                          Id INT AUTO_INCREMENT PRIMARY KEY,
+                         Employee_Id Double not null,
                          Name VARCHAR(50) NOT NULL,
                          Description TEXT,
                          Deadline DATE,
