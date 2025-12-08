@@ -41,7 +41,7 @@ public class SubProjectController {
         List<SubProject> subProjects = subProjectService.getAllSubProjectsByProjectId(projectId);
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("projectId", projectId);
-        return "subprojects";
+        return "project-details";
     }
 
     @GetMapping("/create/{projectId}")

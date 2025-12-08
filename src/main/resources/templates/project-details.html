@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Projekt Detaljer</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <a th:href="@{/projects}" class="back-link"> Tilbage til projekter</a>
+
+    <h1>Projekt: <span th:text="${project.name}">Projektnavn</span></h1>
+
+    <p class="info">
+        Beskrivelse: <span th:text="${project.description}"></span><br>
+        Deadline: <span th:text="${project.deadline}"></span><br>
+        Estimerede timer: <span th:text="${project.estimatedHour}"></span><br>
+    </p>
+
+    <hr>
+
+    <div th:if="${role.name() == 'PROJECT_LEADER'}">
+        <h2> Opret nyt delprojekt</h2>
+
+        <form th:action="@{/subprojects/create/{projectId}(projectId=${project.projectId})}"
+              th:object="${new_subproject}"
+              method="post"
+              class="create-form">
+
+            <input type="text" th:field="*{name}" placeholder="Navn" required>
+            <textarea th:field="*{description}" placeholder="Beskrivelse"></textarea>
+            <input type="number" th:field="*{estimatedHour}" step="0.5" required>
+
+            <button type="submit">Opret delprojekt</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <h2>Delprojekter</h2>
+
+    <div th:if="${subProjects.isEmpty()}">
+        <p>Ingen delprojekter endnu</p>
+    </div>
+
+    <div th:each="subproject : ${subProjects}" class="subproject">
+
+        <h3 th:text="${subproject.name}"></h3>
+        <p>
+            <span th:text="${subproject.description}"></span><br>
+            Deadline: <span th:text="${subproject.deadline}"></span> |
+            Timer: <span th:text="${subproject.estimatedHour}"></span>
+        </p>
+
+        <div th:if="${role.name() == 'PROJECT_LEADER'}">
+            <form th:action="@{/tasks/create/{id}(id=${subproject.subProjectId})}"
+                  th:object="${new_task}"
+                  method="post">
+
+                <input type="text" th:field="*{name}" placeholder="Task navn" required>
+                <textarea th:field="*{description}" placeholder="Beskrivelse"></textarea>
+                <input type="date" th:field="*{deadline}" required>
+                <input type="number" th:field="*{estimatedHours}" step="0.5" required>
+
+                <select th:field="*{status}">
+                    <option value="TODO">TODO</option>
+                    <option value="INPROGRESS">IN PROGRESS</option>
+                    <option value="DONE">DONE</option>
+
+                </select>
+
+                <button type="submit">Opret Task</button>
+            </form>
+        </div>
+
+        <div th:if="${subproject.tasks != null}">
+            <div th:each="task : ${subproject.tasks}" class="task">
+
+                <h4 th:text="${task.name}"></h4>
+                <p>
+                    <span th:text="${task.description}"></span><br>
+                    Deadline: <span th:text="${task.deadline}"></span> |
+                    Timer: <span th:text="${task.estimatedHours}"></span> |
+                    Status: <span th:text="${task.status}"></span> |
+                </p>
+
+                <div th:if="${role.name() == 'PROJECT_LEADER'}">
+                    <form th:action="@{/subtasks/create/{id}(id=${task.taskId})}"
+                          th:object="${new_subtask}"
+                          method="post">
+
+                        <input type="text" th:field="*{name}" placeholder="Subtask navn" required>
+                        <textarea th:field="*{description}" placeholder="Beskrivelse"></textarea>
+                        <input type="number" th:field="*{estimatedHours}" step="0.5" required>
+
+                        <select th:field="*{status}">
+                            <option value="TO_DO">TODO</option>
+                            <option value="IN_PROGRESS">IN PROGRESS</option>
+                            <option value="DONE">DONE</option>
+                        </select>
+
+                        <button type="submit">Opret Subtask</button>
+                    </form>
+                </div>
+
+                <div th:if="task.subtasks != null">
+                    <div th:each="subtask : ${task.subtaks}" class="subtask">
+                        <strong th:text="${subtask.name}"></strong> |
+                        <span th:text="${subtask.description}"></span> |
+                        <span th:text="${subtask.estimatedHours}"></span>timer |
+                        <span th:text="${subtask.status}"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+
+    </div>
+
+</div>
+
+</body>
+</html>

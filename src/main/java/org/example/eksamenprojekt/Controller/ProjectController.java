@@ -1,30 +1,35 @@
 package org.example.eksamenprojekt.Controller;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.eksamenprojekt.Model.Project;
-import org.example.eksamenprojekt.Model.Role;
-import org.example.eksamenprojekt.Model.User;
-import org.example.eksamenprojekt.Service.ProjectService;
-import org.example.eksamenprojekt.Service.UserService;
+import org.example.eksamenprojekt.Model.*;
+import org.example.eksamenprojekt.Service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
-
-
 import java.util.List;
 import java.util.Objects;
+
 @RequestMapping("projects")
 @Controller
 public class ProjectController {
     private final UserService userService;
     private final ProjectService projectService;
+    private final SubProjectService subProjectService;
+    private final TaskService taskService;
+    private final SubTaskService subTaskService;
 
-    public ProjectController ( UserService userService, ProjectService projectService){
+
+    public ProjectController ( UserService userService,
+                               ProjectService projectService,
+                               SubProjectService subProjectService,
+                               TaskService taskService,
+                               SubTaskService subTaskService){
         this.userService = userService;
         this.projectService = projectService;
+        this.subProjectService = subProjectService;
+        this.taskService = taskService;
+        this.subTaskService = subTaskService;
     }
 
     @GetMapping()
@@ -109,6 +114,41 @@ public class ProjectController {
     public String updateProject(@PathVariable int projectId, Model model){
         model.addAttribute("project", projectService.getByProjectId(projectId));
         return "update";
+    }
+
+    @GetMapping("/{projectId}/details")
+    public String viewProjectDetails(@PathVariable int projectId, Model model, HttpSession session){
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
+        Role role = (Role) session.getAttribute("role");
+
+        Project project = projectService.getByProjectId(projectId);
+
+        List<SubProject> subProjects = subProjectService.getAllSubProjectsByProjectId(projectId);
+        for (SubProject sp: subProjects){
+
+            List<Task> tasks = taskService.getAllTaskBySubProjectId(sp.getSubProjectId());
+            sp.setTasks(tasks);
+
+            for (Task t: tasks){
+                List<SubTask> subTasks = subTaskService.getAllSubTasksByTaskID(t.getTaskId());
+                t.setSubtasks(subTasks);
+            }
+        }
+
+        model.addAttribute("project", project);
+        model.addAttribute("subProjects", subProjects);
+        model.addAttribute("role", role);
+
+        model.addAttribute("new_subproject", new SubProject());
+        model.addAttribute("new_task", new Task());
+        model.addAttribute("new_subtask", new SubTask());
+
+        return "project-details";
+
+
+
     }
 
     @PostMapping("/{projectId}/update")

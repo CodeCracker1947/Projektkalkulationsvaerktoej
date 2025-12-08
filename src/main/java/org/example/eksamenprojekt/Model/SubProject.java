@@ -1,6 +1,8 @@
 package org.example.eksamenprojekt.Model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SubProject {
     private String name;
@@ -10,6 +12,7 @@ public class SubProject {
     private int subProjectId;
     private String deadline;
     private double estimatedHour;
+    private List<Task> tasks = new ArrayList<>();
 
     public SubProject(int projectId, int subProjectId, int userId, String name, String description, String deadline, double estimatedHour){
         this.projectId = projectId;
@@ -85,5 +88,13 @@ public class SubProject {
 
     public void setEstimatedHour(double estimatedHour) {
         this.estimatedHour = estimatedHour;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }

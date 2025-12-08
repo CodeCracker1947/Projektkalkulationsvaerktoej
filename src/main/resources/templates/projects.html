@@ -28,7 +28,7 @@
         <td th:text="${project.deadline}"></td>
 
         <td>
-            <a th:href="@{/subprojects/project/{projectId}(projectId=${project.projectId})}">Se delprojekter</a> |
+            <a th:href="@{/projects/{projectId}/details(projectId=${project.projectId})}">Se delprojekter</a> |
             <a th:href="@{/projects/{projectId}/update(projectId=${project.projectId})}">Rediger</a> |
             <form th:action="@{/projects/delete/{projectId}(projectId=${project.projectId})}" method="post" style="display:inline;">
                 <button type="submit">Slet</button>

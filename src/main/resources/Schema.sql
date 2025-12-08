@@ -38,6 +38,7 @@ CREATE TABLE Subproject (
                             Project_Id INT NOT NULL,
                             Name VARCHAR(50) NOT NULL,
                             Description TEXT,
+                            EstimatedHour DOUBLE,
                             FOREIGN KEY (Project_Id) REFERENCES Project(Id) ON DELETE CASCADE
 );
 
