@@ -17,8 +17,12 @@ public class SubProjectService {
     return repository.findAll();
     }
 
+    public List <SubProject> getAllSubProjectsByProjectId(int projectId){
+    return repository.getAllSubProjectByProjectId(projectId);
+    }
+
     public SubProject getBySubProjectId(int subProjectId){
-    return repository.findSubProjectBySubProjectId(subProjectId);
+        return repository.findSubProjectBySubProjectId(subProjectId);
     }
 
    public void addSubProject(SubProject subProject){

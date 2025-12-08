@@ -42,4 +42,9 @@ public class ProjectService {
     public void assignEmployeeToProject(int projectId, int userId){
         repository.assignEmployeeToProject(projectId, userId);
     }
+
+    public int getLastInsertedProjectId(){
+        return  repository.getLastInsertedProjectId();
+    }
+
 }

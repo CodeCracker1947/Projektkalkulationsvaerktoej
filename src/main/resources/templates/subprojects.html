@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mine projekter</title>
-    <link rel="stylesheet" href="/static/main.css" th:href="@{/main.css}">
-
+    <title>Title</title>
 </head>
 <body>
 
@@ -12,7 +10,7 @@
 <div th:if="${success}" th:text="${success}" style="color: green"></div>
 <h2>Dine projekter</h2>
 
-<a th:href="@{/projects/create}"> + Opret nyt projekt</a>
+<a th:href="@{/subprojects/create}"> + Opret nyt delprojekt</a>
 
 <table>
     <tr>

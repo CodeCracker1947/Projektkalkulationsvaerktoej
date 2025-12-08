@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Opret nyt projekt</title>
-    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="stylesheet" th:href="@{/project.css}">
 </head>
 <body>
 <h1>Opret nyt projekt</h1>
 
 <div class="form-container">
 
-<section class="create-section">
-  <form th:action="@{/create/{projectId})}" th:object="${new_project}" method="post">
+    <div th:if="${success}" th:text="${success}" style="color: green"></div>
+
+    <section class="create-section">
+  <form th:action="@{/projects/create}" th:object="${new_project}" method="post">
       <label>Projekt navn:</label><br>
       <input type="text" th:field="*{name}" placeholder="Skriv projektets navn" required><br><br>
 
@@ -21,37 +23,23 @@
       <label>Deadline:</label><br>
       <input type="date" th:field="*{deadline}" required><br><br>
 
-      <label>Estimerede tidsforbrug :</label><br>
+      <label>Estimeret tidsforbrug:</label><br>
       <input type="number" th:field="*{estimatedHour}" step="0.5" required> <span>timer</span><br><br>
 
-      <section class="assign-section">
-          <form th:action="@{/projects/{id}/assign(id=${projectId})}" method="post">
-              <label>Vælg medarbejder</label>
-              <select name="userId">
-                  <option th:each="emp : ${employees}"
-                          th:value="${emp.userId}"
-                          th:text="${emp.name}">
-                  </option>
-              </select>
+          <div class="form-group">
+              <label>Tildel medarbejdere til projektet:</label>
+              <div class="checkboxes">
+                  <label th:each="emp : ${employees}">
+                      <input type="checkbox" name="userIds" th:value="${emp.userId}">
+                      <span th:text="${emp.name}"></span>
+                  </label>
+              </div>
+          </div>
 
-              <button type="submit">Tildel</button>
-          </form>
-          <a th:href="@{/projects}">Tilbage</a>
-      </section>
-
-
-
-<p th:if="${success}" th:text="${success}" style="color: green"></p>
-
-
-<button type="submit"> Opret projekt </button>
-
+          <button type="submit" class="header-buttons"> Opret projekt </button>
   </form>
-    <a th:href="@{projects}">Tilbage til projekter </a>
 </section>
-
-
-<p th:if="${success}" th:text="${success}" style="color: green"></p>
+    <a th:href="@{/projects}">Tilbage til projekter</a>
 
 </div>
 </body>

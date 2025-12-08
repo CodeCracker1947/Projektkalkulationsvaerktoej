@@ -8,14 +8,12 @@ import org.example.eksamenprojekt.Service.SubProjectService;
 import org.example.eksamenprojekt.Service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
 
+@RequestMapping("subprojects")
 @Controller
 public class SubProjectController {
     private final UserService userService;
@@ -26,7 +24,7 @@ public class SubProjectController {
         this.subProjectService = subProjectService;
     }
 
-    @GetMapping("/subprojects")
+    @GetMapping()
     public String showSubProjects(HttpSession session, Model model){
         int userId = (Integer) session.getAttribute("userId");
 
@@ -35,60 +33,88 @@ public class SubProjectController {
         return "subprojects";
     }
 
-    @GetMapping("/projects/{projectId}/subprojects/create")
-    public String showCreateSubProjectForm(HttpSession session, Model model) {
+    @GetMapping("/projects/{projectId}")
+    public String viewSubProjectByProject(@PathVariable int projectId, Model model, HttpSession session){
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
+        List<SubProject> subProjects = subProjectService.getAllSubProjectsByProjectId(projectId);
+        model.addAttribute("subProjects", subProjects);
+        model.addAttribute("projectId", projectId);
+        return "subprojects";
+    }
+
+    @GetMapping("/create/{projectId}")
+    public String showCreateSubProjectForm(@PathVariable int projectId, HttpSession session, Model model) {
         Role role = (Role) session.getAttribute("role");
-        if (!"PROJECT_LEADER".equals(role)){
-            return "redirect:/subprojects";
+        if (role != Role.PROJECT_LEADER){
+            return "redirect:/projects";
         }
         model.addAttribute("new_subproject", new SubProject());
+        model.addAttribute("projectId", projectId);
         return "subproject-create";
     }
 
-    @PostMapping("/projects/{projectId}/subprojects/create")
-    public String createSubProject(@ModelAttribute SubProject subProject, HttpSession session) {
+    @PostMapping("/create/{projectId}")
+    public String createSubProject(@PathVariable int projectId, @ModelAttribute SubProject subProject, HttpSession session) {
         Role role = (Role) session.getAttribute("role");
-        if (!"PROJECT_LEADER".equals(role)) {
+        if (role != Role.PROJECT_LEADER)
             return "redirect:/projects";
-        }
+
+        subProject.setProjectId(projectId);
+        Integer userId = (Integer) session.getAttribute("userId");
+        subProject.setUserId(userId);
 
         subProjectService.addSubProject(subProject);
-        return "redirect:/projects";
+        return "redirect:/subprojects/project/" + projectId;
     }
 
-    @GetMapping("/subprojects/{subprojectId}")
+
+    @GetMapping("/project/{projectId}")
+    public String viewSubProjectsByProject(@PathVariable int projectId, Model model, HttpSession session){
+      Integer userId = (Integer) session.getAttribute("userId");
+      if (userId == null) return "redirect:/login";
+
+        List<SubProject> subProjects = subProjectService.getAllSubProjectsByProjectId(projectId);
+        model.addAttribute("subProjects", subProjects);
+        model.addAttribute("projectId", projectId);
+        return "subprojects";
+    }
+
+    @GetMapping("/{subProjectId}")
     public String viewSubproject(@PathVariable int subprojectId, Model model){
         model.addAttribute("subproject", subProjectService.getBySubProjectId(subprojectId));
         return "subproject-details";
     }
 
-    @GetMapping("/project/{projectId}/subprojects/update")
-    public String updateSubProject(@PathVariable int subProjectId, Model model){
-        model.addAttribute("project", subProjectService.getBySubProjectId(subProjectId));
-        return "update";
-    }
-
-    @PostMapping("/project/{projectId}/subprojects/update")
-    public String saveUpdate(@ModelAttribute SubProject model, HttpSession session) {
+    @GetMapping("/update/{subProjectId}")
+    public String updateSubProject(@PathVariable int subProjectId, Model model, HttpSession session){
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";
 
-        SubProject existingSubProject = subProjectService.getBySubProjectId(model.getSubProjectId());
-        if (Objects.equals(existingSubProject.getUserId(), userId)); {
-            subProjectService.updateSubProject(model.getSubProjectId(), model);
-        }
-        return "redirect:/projects";
+        model.addAttribute("subproject", subProjectService.getBySubProjectId(subProjectId));
+        return "subproject-update";
+    }
+
+    @PostMapping("/update/{subProjectId}")
+    public String saveUpdate(@PathVariable int subProjectId, @ModelAttribute SubProject subProject, HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
+        subProjectService.updateSubProject(subProjectId,subProject);
+        return "redirect:/subprojects/project/" + subProject.getProjectId();
     }
 
 
-    @PostMapping("/delete/{subprojectId}")
+    @PostMapping("/delete/{subProjectId}")
     public String deleteSubProject(@PathVariable int subProjectId, HttpSession session){
         Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
 
         SubProject subProject = subProjectService.getBySubProjectId(subProjectId);
-        if (Objects.equals(subProject.getUserId(), userId)) {
-            subProjectService.delete(subProjectId);
-        }
-        return "redirect:/projects";
+        int projectId = subProject.getProjectId();
+
+        subProjectService.delete(subProjectId);
+        return "redirect:/subprojects/project/" + projectId;
     }
 }

@@ -2,20 +2,18 @@ package org.example.eksamenprojekt.Controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.eksamenprojekt.Model.Role;
+import org.example.eksamenprojekt.Model.SubProject;
 import org.example.eksamenprojekt.Model.Task;
 import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Service.TaskService;
 import org.example.eksamenprojekt.Service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
-
+@RequestMapping("tasks")
 @Controller
 public class TaskController {
     private final UserService userService;
@@ -26,7 +24,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/tasks")
+    @GetMapping()
     public String showTasks(HttpSession session, Model model) {
         int userId = (Integer) session.getAttribute("userId");
 
@@ -35,25 +33,42 @@ public class TaskController {
         return "tasks";
     }
 
-    @GetMapping("/subprojects/{subprojectId}/tasks/create")
-    public String showCreateTaskForm(HttpSession session, Model model){
+    @GetMapping("/subproject/{subprojectId}")
+    public String viewTasksBySubProject(@PathVariable int subprojectId, Model model, HttpSession session){
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
+        List<Task> tasks = taskService.getAllTaskBySubProjectId(subprojectId);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("subprojectId", subprojectId);
+        return "tasks";
+    }
+
+
+    @GetMapping("/create/{subprojectId}")
+    public String showCreateTaskForm(@PathVariable int subprojectId, HttpSession session, Model model){
         Role role = (Role) session.getAttribute("role");
         if (!"PROJECT_LEADER".equals(role)) {
-            return "redirect:/tasks";
+            return "redirect:/projects";
         }
         model.addAttribute("new_task", new Task());
+        model.addAttribute("subprojectId", subprojectId);
         return "task-create";
 
     }
 
-    @PostMapping("/subprojects/{subprojectId}/tasks/create")
-    public String createTask(@ModelAttribute Task task, HttpSession session) {
+    @PostMapping("/create/{subprojectId}")
+    public String createTask(@PathVariable int subprojectId, @ModelAttribute Task task, HttpSession session) {
         Role role = (Role) session.getAttribute("role");
         if (!"PROJECT_LEADER".equals(role)) {
-            return "redirect:/tasks";
+            return "redirect:/projects";
         }
+        task.setSubProjectId(subprojectId);
+        Integer userId = (Integer) session.getAttribute("userId");
+        task.setUserId(userId);
+
         taskService.addTask(task);
-        return "redirect:/tasks";
+        return "redirect:/tasks/subproject/" + subprojectId;
     }
 
     @GetMapping("/tasks{taskId}")
@@ -62,22 +77,25 @@ public class TaskController {
         return "task-details";
     }
 
-    @GetMapping("/task/{taskId}/update")
-    public String updateTask(@PathVariable int taskId, Model model) {
-        model.addAttribute("task", taskService.getByTaskId(taskId));
-        return "update";
-    }
-
-    @PostMapping("/task/{taskId}/update")
-    public String saveUpdate(@ModelAttribute Task model, HttpSession session) {
+    @GetMapping("/update/{taskId}")
+    public String updateTask(@PathVariable int taskId, Model model, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";
 
-        Task existingTask = taskService.getByTaskId(model.getTaskId());
+        model.addAttribute("task", taskService.getByTaskId(taskId));
+        return "task-update";
+    }
+
+    @PostMapping("/update/{taskId}")
+    public String saveUpdate(@PathVariable int taskId, @ModelAttribute Task task, HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
+        Task existingTask = taskService.getByTaskId(task.getTaskId());
         if (Objects.equals(existingTask.getUserId(), userId)) {
-            taskService.updateTask(model.getTaskId(), model);
+            taskService.updateTask(taskId,task);
         }
-        return "redirect:/tasks";
+        return "redirect:/tasks/subproject/" + task.getSubProjectId();
     }
 
     @PostMapping("/delete/{taskId}")
@@ -85,9 +103,11 @@ public class TaskController {
         Integer userId = (Integer) session.getAttribute("userId");
 
         Task task = taskService.getByTaskId(taskId);
+        int subprojectId = task.getSubProjectId();
+
         if (Objects.equals(task.getUserId(), userId)) {
             taskService.delete(taskId);
         }
-        return "redirect:/tasks";
+        return "redirect:/tasks/subproject/" + subprojectId;
     }
 }

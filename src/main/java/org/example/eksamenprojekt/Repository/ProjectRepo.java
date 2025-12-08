@@ -22,7 +22,7 @@ public class ProjectRepo {
                     rs.getInt("Employee_Id"),
                     rs.getString("Name"),
                     rs.getString("Description"),
-                    rs.getDate("Deadline"),
+                    rs.getString("Deadline"),
                     rs.getDouble("EstimatedHours")
             );
 
@@ -50,8 +50,9 @@ public class ProjectRepo {
 
     // vi har slettet Project_Id, Employee_Id, fra vores args)
     public void save(Project project){
-        String sql = "insert into Project (Name, Description, Deadline, EstimatedHours) values (?,?,?,?)";
+        String sql = "insert into Project (Employee_Id, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?)";
         jdbcTemplate.update(sql,
+                project.getUserId(),
                 project.getName(),
                 project.getDescription(),
                 project.getDeadline(),
@@ -68,7 +69,7 @@ public class ProjectRepo {
             p.setProjectId(rs.getInt("Id"));
             p.setName(rs.getString("Name"));
             p.setDescription(rs.getString("Description"));
-            p.setDeadline(rs.getDate("Deadline"));
+            p.setDeadline(rs.getString("Deadline"));
             p.setEstimatedHour(rs.getDouble("EstimatedHours"));
             return p;
         }, userId);
@@ -81,6 +82,13 @@ public class ProjectRepo {
 
     public void assignEmployeeToProject(int projectId, int userId){
         String sql = "insert into EmployeeProject(Employee_Id, Project_Id) values (?,?)";
-        jdbcTemplate.update(sql,projectId, userId);
+        jdbcTemplate.update(sql, userId, projectId);
+    }
+
+    public int getLastInsertedProjectId(){
+        String sql = "SELECT Id FROM Project ORDER BY Id DESC LIMIT 1";
+        Integer lastId = jdbcTemplate.queryForObject(sql,Integer.class);
+        return lastId != null ? lastId : 0;
+
     }
 }

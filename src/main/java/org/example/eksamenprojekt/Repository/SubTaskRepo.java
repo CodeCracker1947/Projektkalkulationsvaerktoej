@@ -2,6 +2,7 @@ package org.example.eksamenprojekt.Repository;
 
 import org.example.eksamenprojekt.Model.Status;
 import org.example.eksamenprojekt.Model.SubTask;
+import org.example.eksamenprojekt.Model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -77,5 +78,10 @@ public class SubTaskRepo {
     public SubTask findSubTaskBySubTaskId(int subTaskId){
     String sql = "select * from Subtask where Subtask_Id=?";
     return jdbcTemplate.queryForObject(sql, subTaskRowMapper);
+    }
+
+    public List<SubTask> getAllSubTasksByTaskID(int subtaskId){
+        String sql ="select * from Subtask where Task_Id =?";
+        return jdbcTemplate.query(sql, subTaskRowMapper, subtaskId);
     }
 }

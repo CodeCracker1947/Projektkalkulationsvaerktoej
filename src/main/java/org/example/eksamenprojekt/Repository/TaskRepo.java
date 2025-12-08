@@ -24,7 +24,7 @@ public class TaskRepo {
                     rs.getInt("Employee_Id"),
                     rs.getString("Name"),
                     rs.getString("Description"),
-                    rs.getDate("Deadline"),
+                    rs.getString("Deadline"),
                     rs.getDouble("EstimatedHours"),
                     Status.valueOf(rs.getString("Status").toUpperCase())
             );
@@ -75,7 +75,7 @@ public class TaskRepo {
             t.setSubProjectId(rs.getInt("Subproject_Id"));
             t.setName(rs.getString("Name"));
             t.setDescription(rs.getString("Description"));
-            t.setDeadline(rs.getDate("Deadline"));
+            t.setDeadline(rs.getString("Deadline"));
             t.setEstimatedHours(rs.getDouble("EstimatedHours"));
             t.setStatus(Status.valueOf(rs.getString("Status").toUpperCase()));
             return t;
@@ -86,6 +86,11 @@ public class TaskRepo {
     public Task findTaskByTaskId(int taskId) {
         String sql = "select * from Task where Task_Id=?";
         return jdbcTemplate.queryForObject(sql, taskRowMapper, taskId);
+    }
+
+    public List<Task> getAllTaskBySubProjectId(int subprojectId){
+        String sql ="select * from Task where Subproject_Id =?";
+        return jdbcTemplate.query(sql, taskRowMapper, subprojectId);
     }
 }
 

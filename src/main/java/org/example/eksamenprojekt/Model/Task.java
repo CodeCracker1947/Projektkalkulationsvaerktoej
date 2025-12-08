@@ -9,10 +9,10 @@ public class Task {
     private int userId;
     private String description;
     private double estimatedHours;
-    private Date deadline;
+    private String deadline;
     private Status status;
 
-    public Task(int subProjectId, int taskId, int userId, String name, String description, Date deadline, double estimatedHours, Status status){
+    public Task(int subProjectId, int taskId, int userId, String name, String description, String deadline, double estimatedHours, Status status){
        this.subProjectId = subProjectId;
         this.taskId = taskId;
         this.userId = userId;
@@ -23,7 +23,7 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String name, String description, Date deadline, double estimatedHours, Status status){
+    public Task(String name, String description, String deadline, double estimatedHours, Status status){
         this.name = name;
         this.description = description;
         this.deadline = deadline;
@@ -82,11 +82,11 @@ public class Task {
         this.estimatedHours = estimatedHours;
     }
 
-    public Date getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 

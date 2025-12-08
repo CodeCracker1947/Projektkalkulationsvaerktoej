@@ -11,7 +11,7 @@ CREATE TABLE Project (
                          Name VARCHAR(50) NOT NULL,
                          Description TEXT,
                          Deadline DATE,
-                         EstimatedHours INT DEFAULT 0
+                         EstimatedHours DOUBLE DEFAULT 0
 );
 
 
@@ -47,7 +47,7 @@ CREATE TABLE Task (
                       Subproject_Id INT NOT NULL,
                       Name VARCHAR(50) NOT NULL,
                       Description TEXT,
-                      EstimatedHours INT DEFAULT 0,
+                      EstimatedHours DOUBLE DEFAULT 0,
                       Deadline DATE,
                       Status ENUM('ToDo', 'InProgress', 'Done') DEFAULT 'ToDo',
                       FOREIGN KEY (Subproject_Id) REFERENCES Subproject(Id) ON DELETE CASCADE
@@ -68,7 +68,7 @@ CREATE TABLE Subtask (
                          Task_Id INT NOT NULL,
                          Name VARCHAR(50) NOT NULL,
                          Description TEXT,
-                         EstimatedHours INT DEFAULT 0,
+                         EstimatedHours DOUBLE DEFAULT 0,
                          Status ENUM('ToDo', 'InProgress', 'Done') DEFAULT 'ToDo',
                          FOREIGN KEY (Task_Id) REFERENCES Task(Id) ON DELETE CASCADE
 );

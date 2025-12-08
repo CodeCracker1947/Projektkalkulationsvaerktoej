@@ -22,7 +22,7 @@ public class SubProjectRepo {
                     rs.getInt("Employee_Id"),
                     rs.getString("Name"),
                     rs.getString("Description"),
-                    rs.getDate("Deadline"),
+                    rs.getString("Deadline"),
                     rs.getDouble("EstimatedHours")
             );
 
@@ -68,15 +68,21 @@ public class SubProjectRepo {
                     sp.setProjectId(rs.getInt("Project_Id"));
                     sp.setName(rs.getString("Name"));
                     sp.setDescription(rs.getString("Description"));
-                    sp.setDeadline(rs.getDate("Deadline"));
+                    sp.setDeadline(rs.getString("Deadline"));
                     sp.setEstimatedHour(rs.getDouble("EstimatedHours"));
                     return sp;
         }, userId);
     }
 
     public SubProject findSubProjectBySubProjectId(int subProjectId){
-    String sql = "select * from Subproject where Subproject_ID=?";
-    return jdbcTemplate.queryForObject(sql, subProjectRowMapper, subProjectId);
+      String sql = "select * from Subproject where Subproject_Id=?";
+      return jdbcTemplate.queryForObject(sql, subProjectRowMapper,subProjectId);
+    }
+
+
+    public List<SubProject> getAllSubProjectByProjectId(int subProjectId){
+    String sql = "select * from Subproject where Project_ID=?";
+    return jdbcTemplate.query(sql, subProjectRowMapper, subProjectId);
     }
 
 

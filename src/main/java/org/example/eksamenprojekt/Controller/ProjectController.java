@@ -9,6 +9,10 @@ import org.example.eksamenprojekt.Service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +37,7 @@ public class ProjectController {
         model.addAttribute("username", user.getName());
         Role role = (Role) session.getAttribute("role");
 
-        List<Project> projects = projectService.getAllProjectsByUserId(userId);;
+        List<Project> projects = projectService.getAllProjectsByUserId(userId);
 
         model.addAttribute("projects", projects);
         model.addAttribute("role", role);
@@ -46,25 +50,27 @@ public class ProjectController {
       if (userId == null)
           return "redirect:/login";
 
-        String role = (String) session.getAttribute("role");
-         if (!"PROJECT_LEADER".equals(role)){
-             return "redirect:/projects";
+       /* Role role = (Role) session.getAttribute("role");
+         if (role != Role.PROJECT_LEADER){
+             return "redirect:/projects_create";
          }
+
+        */
          model.addAttribute("new_project", new Project());
          model.addAttribute("employees", userService.getAllDevelopers());
         return "project-create";
     }
 
-    @GetMapping("/{id}/assign")
+    @GetMapping("/{projectId}/assign")
     public String showAssignForm(@PathVariable int projectId, Model model, HttpSession session) {
-        Role role = (Role) session.getAttribute("Role");
-        if (!"PROJECT_LEADER".equals(role)) {
+        Role role = (Role) session.getAttribute("role");
+        if (role != Role.PROJECT_LEADER){
             return "redirect:/projects";
         }
         model.addAttribute("projectId", projectId);
         model.addAttribute("employees", userService.getAllDevelopers());
 
-        return "project-create";
+        return "project-assign";
     }
 
     @PostMapping("/{projectId}/assign")
@@ -74,15 +80,29 @@ public class ProjectController {
     }
 
 
-    @PostMapping("/create/{projectId}")
-    public String createProject(@ModelAttribute Project project, HttpSession session) {
-        String role = (String) session.getAttribute("role");
-        if (!"PROJECT_LEADER".equals(role)){
+    @PostMapping("/create")
+    public String createProject(@ModelAttribute Project project, @RequestParam(required = false) List<Integer> userIds, HttpSession session, RedirectAttributes redirectAttributes) {
+        Role role = (Role) session.getAttribute("role");
+        if (role != Role.PROJECT_LEADER){
             return "redirect:/projects";
         }
 
-       projectService.addProject(project);
-        return "redirect:/projects/";
+        Integer userId = (Integer) session.getAttribute("userId");
+        project.setUserId(userId);
+
+        projectService.addProject(project);
+        int projectId = projectService.getLastInsertedProjectId();
+
+        projectService.assignEmployeeToProject(projectId,userId);
+
+        if (userIds != null && !userIds.isEmpty()) {
+            for (Integer selectedUserId : userIds) {
+               projectService.assignEmployeeToProject(projectId, selectedUserId);
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("success","Projektet '" + project.getName() + "' er nu oprettet");
+        return "redirect:/projects";
     }
 
     @GetMapping("/{projectId}/update")

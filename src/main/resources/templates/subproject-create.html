@@ -8,7 +8,7 @@
 <body>
 <h1>Opret nyt delprojekt</h1>
 <section>
-    <form th:action="@{/projects/{projectId}/subprojects/create(projectId=${projectId})}" th:object="${new_subproject}" method="post">
+    <form th:action="@{/subprojects/create/{projectId}}" th:object="${new_subproject}" method="post">
         <label>Delprojekt titel:</label><br>
         <input type="text" th:field="*{name}" placeholder="Skriv delprojektets titel" required><br><br>
 

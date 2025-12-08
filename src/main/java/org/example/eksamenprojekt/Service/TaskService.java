@@ -36,4 +36,8 @@ public class TaskService {
     public List<Task> getAllTaskByUserId (int userId){
     return repository.findAllByUserID(userId);
     }
+
+    public List<Task> getAllTaskBySubProjectId (int projectId){
+        return repository.getAllTaskBySubProjectId(projectId);
+    }
 }
