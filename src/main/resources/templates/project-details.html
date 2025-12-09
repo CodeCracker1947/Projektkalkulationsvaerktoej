@@ -7,6 +7,11 @@
 </head>
 <body>
 
+<form th:action="@{/logout}" method="get">
+    <button type="submit">Log ud</button>
+</form>
+
+
 <div class="container">
 
     <a th:href="@{/projects}" class="back-link"> Tilbage til projekter</a>
@@ -65,8 +70,8 @@
                 <input type="number" th:field="*{estimatedHours}" step="0.5" required>
 
                 <select th:field="*{status}">
-                    <option value="TODO">TODO</option>
-                    <option value="INPROGRESS">IN PROGRESS</option>
+                    <option value="TO_DO">TODO</option>
+                    <option value="IN_PROGRESS">IN PROGRESS</option>
                     <option value="DONE">DONE</option>
 
                 </select>

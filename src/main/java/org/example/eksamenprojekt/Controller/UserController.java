@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService service;
 
-    public UserController(UserService service){
+    public UserController(UserService service) {
         this.service = service;
     }
 
     @PostMapping("/register")
-    public String register (@ModelAttribute User user, HttpSession session, Model model){
+    public String register(@ModelAttribute User user, HttpSession session, Model model) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             model.addAttribute("registerError", "Passwords do not match!");
             return "register";
@@ -35,7 +35,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
-                        HttpSession session, Model model){
+                        HttpSession session, Model model) {
 
         if (service.login(username, password)) {
             User user = service.getUsername(username);
@@ -50,19 +50,13 @@ public class UserController {
 
     @GetMapping("/user/{username}")
     @ResponseBody
-    public User getUser(@PathVariable String username){
+    public User getUser(@PathVariable String username) {
         return service.getUsername(username);
     }
 
     @GetMapping("/email/{email}")
-    public User getUserByEmail(@PathVariable String email){
+    public User getUserByEmail(@PathVariable String email) {
         return service.getEmail(email);
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session){
-        session.invalidate();
-        return "redirect:/";
     }
 
 }

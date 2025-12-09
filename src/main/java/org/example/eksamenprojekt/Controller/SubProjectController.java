@@ -24,7 +24,7 @@ public class SubProjectController {
         this.subProjectService = subProjectService;
     }
 
-    @GetMapping()
+   /* @GetMapping()
     public String showSubProjects(HttpSession session, Model model){
         int userId = (Integer) session.getAttribute("userId");
 
@@ -55,6 +55,9 @@ public class SubProjectController {
         return "subproject-create";
     }
 
+
+    */
+
     @PostMapping("/create/{projectId}")
     public String createSubProject(@PathVariable int projectId, @ModelAttribute SubProject subProject, HttpSession session) {
         Role role = (Role) session.getAttribute("role");
@@ -66,10 +69,10 @@ public class SubProjectController {
         subProject.setUserId(userId);
 
         subProjectService.addSubProject(subProject);
-        return "redirect:/subprojects/project/" + projectId;
+        return "redirect:/projects/" + projectId + "/details";
     }
 
-
+/*
     @GetMapping("/project/{projectId}")
     public String viewSubProjectsByProject(@PathVariable int projectId, Model model, HttpSession session){
       Integer userId = (Integer) session.getAttribute("userId");
@@ -96,13 +99,15 @@ public class SubProjectController {
         return "subproject-update";
     }
 
+ */
+
     @PostMapping("/update/{subProjectId}")
     public String saveUpdate(@PathVariable int subProjectId, @ModelAttribute SubProject subProject, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";
 
         subProjectService.updateSubProject(subProjectId,subProject);
-        return "redirect:/subprojects/project/" + subProject.getProjectId();
+        return "redirect:/projects/" + subProject.getProjectId();
     }
 
 
@@ -115,6 +120,6 @@ public class SubProjectController {
         int projectId = subProject.getProjectId();
 
         subProjectService.delete(subProjectId);
-        return "redirect:/subprojects/project/" + projectId;
+        return "redirect:/projects/" + projectId + "/details";
     }
 }

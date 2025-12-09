@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Mine projekter</title>
-    <link rel="stylesheet" href="/static/project.css" th:href="@{/project.css}">
+    <link rel="stylesheet" th:href="@{/main.css}">
 
 </head>
 <body>
+
+<form th:action="@{/logout}" method="get">
+    <button type="submit">Log ud</button>
+</form>
+
 
 <h1>Hej <span th:text="${username}"></span></h1>
 <div th:if="${success}" th:text="${success}" style="color: green"></div>
@@ -16,6 +21,7 @@
 
 <table>
     <tr>
+
         <th>Projekt Navn</th>
         <th>Beskrivelse</th>
         <th>Estimerede Timer</th>

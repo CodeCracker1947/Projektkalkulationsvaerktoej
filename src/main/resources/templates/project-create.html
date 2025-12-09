@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Opret nyt projekt</title>
-    <link rel="stylesheet" href="/static/main.css" th:href="@{/project.css}">
+    <link rel="stylesheet" th:href="@{/main.css}">
 </head>
 <body>
+
+<form th:action="@{/logout}" method="get">
+    <button type="submit">Log ud</button>
+</form>
+
+
 <h1>Opret nyt projekt</h1>
 
 <div class="form-container">

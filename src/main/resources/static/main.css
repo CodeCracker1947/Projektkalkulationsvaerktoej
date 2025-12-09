@@ -1,132 +1,525 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-}
+/* ========================================
+   GLOBAL STYLING - Professionel Dark Mode
+   ======================================== */
 
-.form-card {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-label {
-    font-weight: bold;
+:root {
+    /* Farver - Dark Mode Theme */
+    --bg-primary: #1a1d29;
+    --bg-secondary: #252936;
+    --bg-tertiary: #2d3142;
+    --accent-blue: #4a90e2;
+    --accent-blue-hover: #357abd;
+    --accent-green: #4caf50;
+    --accent-red: #f44336;
+    --accent-yellow: #ffc107;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b3c1;
+    --border-color: #3d4152;
+    --shadow: rgba(0, 0, 0, 0.3);
 }
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    height: 100vh;
-    width: 100vw;
-    background: url('/static/background.jpg') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-}
-
-
-.header-buttons {
-    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
     padding: 20px;
-    display: flex;
-    justify-content: space-between;
+    min-height: 100vh;
 }
 
-.header-buttons .btn {
-    padding: 10px 20px;
-    background-color: rgba(0, 123, 255, 0.8);
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 6px;
-    transition: background-color 0.3s;
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
-.header-buttons .btn:hover {
-    background-color: rgba(0, 90, 200, 0.9);
+h2 {
+    font-size: 2rem;
+    margin: 1.5rem 0 1rem 0;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-primary);
+}
+
+h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+p {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2rem 0;
+}
+
+/* ========================================
+   CONTAINERS & LAYOUT
+   ======================================== */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--bg-secondary);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px var(--shadow);
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--bg-secondary);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px var(--shadow);
 }
 
 .logo-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     text-align: center;
-    color: white;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 60px 40px;
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px var(--shadow);
 }
 
 .logo-container img {
-    max-width: 300px;
+    max-width: 200px;
+    margin-bottom: 30px;
+}
+
+/* ========================================
+   FORMS
+   ======================================== */
+
+form {
+    margin-bottom: 2rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px 16px;
     margin-bottom: 20px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-.logo-container h1 {
-    font-size: 2.5rem;
-}
-.form-container {
-    display: flex;
-    gap: 40px;
-    align-items: flex-start;
-}
-
-.create-section,
-.assign-section {
-    flex: 1;
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
-.assign-section form {
-    margin-top: 0;
-}
-.link-button {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    color: #007bff;
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: inherit;
+textarea {
+    min-height: 100px;
+    resize: vertical;
     font-family: inherit;
 }
 
-.link-button:hover {
-    color: #0056b3;
+input[type="number"] {
+    width: auto;
+    min-width: 150px;
 }
-table form {
-    max-width: none;
-    margin: 0;
-    padding: 0;
+
+/* Placeholder styling */
+::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+button,
+.btn,
+.header-buttons a {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--accent-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+button:hover,
+.btn:hover,
+.header-buttons a:hover {
+    background-color: var(--accent-blue-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.link-button {
     background: none;
+    color: var(--accent-red);
+    padding: 4px 8px;
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+.link-button:hover {
+    background: none;
+    color: #d32f2f;
+    transform: none;
     box-shadow: none;
-    border-radius: 0;
-    display: inline;
+}
+
+/* ========================================
+   HEADER BUTTONS (Home page)
+   ======================================== */
+
+.header-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+/* ========================================
+   LINKS
+   ======================================== */
+
+a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--accent-blue-hover);
+    text-decoration: underline;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.back-link:hover {
+    color: var(--text-primary);
+}
+
+/* ========================================
+   TABLES
+   ======================================== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th {
+    background-color: var(--accent-blue);
+    color: white;
+    padding: 16px;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: rgba(74, 144, 226, 0.05);
+}
+
+/* ========================================
+   CHECKBOXES
+   ======================================== */
+
+.form-group {
+    margin: 25px 0;
+}
+
+.checkboxes {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.checkboxes label {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.checkboxes label:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+}
+
+.checkboxes input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    margin-bottom: 0;
+    cursor: pointer;
+    accent-color: var(--accent-blue);
+}
+
+/* Scrollbar styling */
+.checkboxes::-webkit-scrollbar {
+    width: 8px;
+}
+
+.checkboxes::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: 4px;
+}
+
+.checkboxes::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.checkboxes::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-blue);
+}
+
+/* ========================================
+   PROJECT DETAILS PAGE
+   ======================================== */
+
+.info {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin: 15px 0;
+}
+
+.create-form {
+    background-color: var(--bg-tertiary);
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border-left: 4px solid var(--accent-blue);
+}
+
+.subproject {
+    background-color: var(--bg-tertiary);
+    padding: 25px;
+    margin: 25px 0;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-blue);
+}
+
+.task {
+    background-color: var(--bg-secondary);
+    padding: 20px;
+    margin: 20px 0 20px 30px;
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-green);
+}
+
+.subtask {
+    background-color: var(--bg-tertiary);
+    padding: 15px;
+    margin: 15px 0 15px 50px;
+    border-radius: 6px;
+    border-left: 2px solid var(--accent-yellow);
+}
+
+/* ========================================
+   STATUS BADGES
+   ======================================== */
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-todo,
+.TO_DO {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+.status-inprogress,
+.IN_PROGRESS {
+    background-color: rgba(33, 150, 243, 0.2);
+    color: #2196f3;
+}
+
+.status-done,
+.DONE {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+}
+
+/* ========================================
+   DETAILS/SUMMARY (Edit inline forms)
+   ======================================== */
+
+details {
+    margin-top: 10px;
+}
+
+summary {
+    cursor: pointer;
+    color: var(--accent-blue);
+    user-select: none;
+    font-weight: 500;
+}
+
+summary:hover {
+    color: var(--accent-blue-hover);
+}
+
+details[open] summary {
+    margin-bottom: 15px;
+}
+
+details form {
+    background-color: var(--bg-tertiary);
+    padding: 20px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+/* ========================================
+   SUCCESS MESSAGES
+   ======================================== */
+
+.success-message,
+div[th\:if*="success"] {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--accent-green);
+    padding: 15px 20px;
+    border-radius: 6px;
+    border-left: 4px solid var(--accent-green);
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .container,
+    .form-container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 12px 8px;
+    }
+
+    .task {
+        margin-left: 15px;
+    }
+
+    .subtask {
+        margin-left: 30px;
+    }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.text-center {
+    text-align: center;
+}
+
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+
+.hidden {
+    display: none;
 }
