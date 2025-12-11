@@ -23,7 +23,7 @@ public class SubProjectRepo {
                     rs.getString("Name"),
                     rs.getString("Description"),
                     null,
-                    rs.getDouble("EstimatedHour")
+                    rs.getDouble("EstimatedHours")
             );
 
     public List<SubProject> findAll(){
@@ -32,7 +32,7 @@ public class SubProjectRepo {
     }
 
     public int update(int subProjectId, SubProject updated){
-        String sql = "update Subproject set name=?, Description=?, EstimatedHour =? where Id=?";
+        String sql = "update Subproject set name=?, Description=?, EstimatedHours =? where Id=?";
         return jdbcTemplate.update(sql,
                 updated.getName(),
                 updated.getDescription(),
@@ -47,7 +47,7 @@ public class SubProjectRepo {
     }
 
     public int save(SubProject subProject){
-    String sql = "insert into Subproject (Project_Id, Name, Description, EstimatedHour) values (?,?,?,?)";
+    String sql = "insert into Subproject (Project_Id, Name, Description, EstimatedHours) values (?,?,?,?)";
     return jdbcTemplate.update(sql,
             subProject.getProjectId(),
             subProject.getName(),
@@ -66,7 +66,7 @@ public class SubProjectRepo {
                     sp.setProjectId(rs.getInt("Project_Id"));
                     sp.setName(rs.getString("Name"));
                     sp.setDescription(rs.getString("Description"));
-                    sp.setEstimatedHour(rs.getDouble("EstimatedHour"));
+                    sp.setEstimatedHour(rs.getDouble("EstimatedHours"));
                     return sp;
         }, userId);
     }

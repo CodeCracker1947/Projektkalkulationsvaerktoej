@@ -55,6 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/email/{email}")
+    @ResponseBody
     public User getUserByEmail(@PathVariable String email) {
         return service.getEmail(email);
     }
