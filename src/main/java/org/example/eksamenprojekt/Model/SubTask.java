@@ -4,15 +4,13 @@ public class SubTask {
     private String name;
     private int taskId;
     private int subTaskId;
-    private int userId;
     private String description;
     private double estimatedHours;
     private Status status;
 
-    public SubTask(int taskId, int subTaskId, int userId, String name, String description, double estimatedHours, Status status){
+    public SubTask(int taskId, int subTaskId, String name, String description, double estimatedHours, Status status){
         this.taskId = taskId;
         this.subTaskId = subTaskId;
-        this.userId = userId;
         this.name = name;
         this.description = description;
         this.estimatedHours = estimatedHours;
@@ -54,14 +52,6 @@ public class SubTask {
 
     public void setSubTaskId(int subTaskId) {
         this.subTaskId = subTaskId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getDescription() {

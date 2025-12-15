@@ -15,15 +15,15 @@ public class SubTaskRepo {
     public SubTaskRepo(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
     }
+
     private RowMapper<SubTask> subTaskRowMapper = (rs, rowNum) ->
             new SubTask(
+                    rs.getInt("Id"),
                     rs.getInt("Task_Id"),
-                    rs.getInt("Subtask_Id"),
-                    rs.getInt("Employee_Id"),
                     rs.getString("Name"),
                     rs.getString("Description"),
                     rs.getDouble("EstimatedHours"),
-                    Status.valueOf(rs.getString("Status").toUpperCase())
+                    Status.valueOf(rs.getString("Status"))
             );
 
     public List<SubTask> findAll(){
@@ -32,22 +32,21 @@ public class SubTaskRepo {
     }
 
     public int update(int subTaskId, SubTask updated){
-    String sql = "update Subtask set Name=?, Description=?, EstimatedHours=?, Status=? where Subtask_Id=?";
+    String sql = "update Subtask set Name=?, Description=?, EstimatedHours=?, Status=? where Id=?";
     return jdbcTemplate.update(sql,
             updated.getName(),
             updated.getDescription(),
             updated.getEstimatedHours(),
-            updated.getStatus(),
+            updated.getStatus().name(),
             subTaskId
         );
     }
 
     public int delete(int subTaskId){
-    String sql = "delete from Subtask where Subtask_Id=?";
+    String sql = "delete from Subtask where Id=?";
     return jdbcTemplate.update(sql, subTaskId);
     }
 
-    // Subtask_Id, Employee_Id
     public int save(SubTask subTask) {
         String sql = "insert into Subtask (Task_Id, Name, Description, EstimatedHours, Status) values (?,?,?,?,?)";
         return jdbcTemplate.update(sql,
@@ -55,12 +54,12 @@ public class SubTaskRepo {
                 subTask.getName(),
                 subTask.getDescription(),
                 subTask.getEstimatedHours(),
-                subTask.getStatus()
+                subTask.getStatus().name()
         );
     }
 
     public List<SubTask> findAllByUserID(int userId) {
-        String sql = "select * from Subtask where Task_Id in (select Task_Id from EmployeeTask where Employee_Id=?)";
+        String sql = "select * from Subtask where Task_Id in (select Task_Id from EmployeeTask where Id=?)";
 
 
         return jdbcTemplate.query(sql,(rs, rowNum) -> {
@@ -70,18 +69,18 @@ public class SubTaskRepo {
             st.setName(rs.getString("Name"));
             st.setDescription(rs.getString("Description"));
             st.setEstimatedHours(rs.getDouble("EstimatedHours"));
-            st.setStatus(Status.valueOf(rs.getString("Status").toUpperCase()));
+            st.setStatus(Status.valueOf(rs.getString("Status")));
             return st;
         }, userId);
     }
 
     public SubTask findSubTaskBySubTaskId(int subTaskId){
-    String sql = "select * from Subtask where Subtask_Id=?";
-    return jdbcTemplate.queryForObject(sql, subTaskRowMapper);
+    String sql = "select * from Subtask where Id=?";
+    return jdbcTemplate.queryForObject(sql, subTaskRowMapper, subTaskId);
     }
 
-    public List<SubTask> getAllSubTasksByTaskID(int subtaskId){
+    public List<SubTask> getAllSubTasksByTaskID(int taskId){
         String sql ="select * from Subtask where Task_Id =?";
-        return jdbcTemplate.query(sql, subTaskRowMapper, subtaskId);
+        return jdbcTemplate.query(sql, subTaskRowMapper, taskId);
     }
 }

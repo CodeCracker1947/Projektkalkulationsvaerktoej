@@ -48,9 +48,9 @@ public class ProjectRepo {
     return jdbcTemplate.update(sql, projectId);
     }
 
-    // vi har slettet Project_Id, Employee_Id, fra vores args)
+
     public int save(Project project){
-        String sql = "insert into Project (Employee_Id, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?)";
+        String sql = "insert into Project (Employee_Id,Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?)";
         jdbcTemplate.update(sql,
                 project.getUserId(),
                 project.getName(),

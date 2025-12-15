@@ -20,13 +20,13 @@ public class TaskRepo {
     private RowMapper<Task> taskRowMapper = (rs, rowNum) ->
             new Task (
                     rs.getInt("Subproject_Id"),
-                    rs.getInt("Task_Id"),
-                    rs.getInt("Employee_Id"),
+                    rs.getInt("Id"),
+                    0,
                     rs.getString("Name"),
                     rs.getString("Description"),
                     rs.getString("Deadline"),
                     rs.getDouble("EstimatedHours"),
-                    Status.valueOf(rs.getString("Status").toUpperCase())
+                    Status.valueOf(rs.getString("Status"))
             );
 
     public List<Task> findAll(){
@@ -36,19 +36,19 @@ public class TaskRepo {
     }
 
     public int update(int taskId, Task updated){
-    String sql = "update Task set Name=?, Description=?, Deadline=?, EstimatedHours=?, Status=? where Task_Id=?";
+    String sql = "update Task set Name=?, Description=?, Deadline=?, EstimatedHours=?, Status=? where Id=?";
         return jdbcTemplate.update(sql,
                 updated.getName(),
                 updated.getDescription(),
                 updated.getDeadline(),
                 updated.getEstimatedHours(),
-                updated.getStatus(),
+                updated.getStatus().name(),
                 taskId
         );
     }
 
     public int delete(int taskId){
-        String sql = "delete from Task where Task_Id=?";
+        String sql = "delete from Task where Id=?";
         return jdbcTemplate.update(sql, taskId);
 
     }
@@ -61,12 +61,12 @@ public class TaskRepo {
                 task.getDescription(),
                 task.getDeadline(),
                 task.getEstimatedHours(),
-                task.getStatus()
+                task.getStatus().name()
         );
     }
         // ændret "select * from Task where Employee_Id=?"
     public List<Task> findAllByUserID(int userId) {
-        String sql = "select * from Task where Id in (select Task_Id from EmployeeTask where Employee_Id=?)";
+        String sql = "select * from Task where Id in (select Id from EmployeeTask where Employee_Id=?)";
 
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -84,7 +84,7 @@ public class TaskRepo {
 
 
     public Task findTaskByTaskId(int taskId) {
-        String sql = "select * from Task where Task_Id=?";
+        String sql = "select * from Task where Id=?";
         return jdbcTemplate.queryForObject(sql, taskRowMapper, taskId);
     }
 

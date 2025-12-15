@@ -1,10 +1,8 @@
 package org.example.eksamenprojekt.Controller;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.eksamenprojekt.Model.Role;
-import org.example.eksamenprojekt.Model.SubProject;
-import org.example.eksamenprojekt.Model.Task;
-import org.example.eksamenprojekt.Model.User;
+import org.example.eksamenprojekt.Model.*;
+import org.example.eksamenprojekt.Service.SubProjectService;
 import org.example.eksamenprojekt.Service.TaskService;
 import org.example.eksamenprojekt.Service.UserService;
 import org.springframework.stereotype.Controller;
@@ -18,10 +16,12 @@ import java.util.Objects;
 public class TaskController {
     private final UserService userService;
     private final TaskService taskService;
+    private final SubProjectService subProjectService;
 
-    public TaskController(UserService userService, TaskService taskService){
+    public TaskController(UserService userService, TaskService taskService, SubProjectService subProjectService){
         this.userService = userService;
         this.taskService = taskService;
+        this.subProjectService = subProjectService;
     }
 
     @GetMapping()
@@ -48,7 +48,7 @@ public class TaskController {
     @GetMapping("/create/{subprojectId}")
     public String showCreateTaskForm(@PathVariable int subprojectId, HttpSession session, Model model){
         Role role = (Role) session.getAttribute("role");
-        if (!"PROJECT_LEADER".equals(role)) {
+        if (role != Role.PROJECT_LEADER) {
             return "redirect:/projects";
         }
         model.addAttribute("new_task", new Task());
@@ -60,7 +60,7 @@ public class TaskController {
     @PostMapping("/create/{subprojectId}")
     public String createTask(@PathVariable int subprojectId, @ModelAttribute Task task, HttpSession session) {
         Role role = (Role) session.getAttribute("role");
-        if (!"PROJECT_LEADER".equals(role)) {
+        if (role !=Role.PROJECT_LEADER) {
             return "redirect:/projects";
         }
         task.setSubProjectId(subprojectId);
@@ -68,7 +68,10 @@ public class TaskController {
         task.setUserId(userId);
 
         taskService.addTask(task);
-        return "redirect:/tasks/subproject/" + subprojectId;
+
+        SubProject subProject = subProjectService.getBySubProjectId(subprojectId);
+        int projectId = subProject.getProjectId();
+        return "redirect:/projects/" + projectId + "/details";
     }
 
     @GetMapping("/tasks{taskId}")
@@ -110,4 +113,26 @@ public class TaskController {
         }
         return "redirect:/tasks/subproject/" + subprojectId;
     }
+
+    @PostMapping("/update-status/{taskId}")
+    public String updateTaskStatus(@PathVariable int taskId,
+                                   @RequestParam Status status,
+                                   HttpSession session) {
+
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
+        Task task = taskService.getByTaskId(taskId);
+
+        if (!Objects.equals(task.getUserId(), userId)) {
+            return "redirect:/projects";
+        }
+
+        task.setStatus(status);
+        taskService.updateTask(taskId, task);
+
+        return "redirect:/projects/" + task.getSubProjectId() + "/details";
+    }
+
+
 }

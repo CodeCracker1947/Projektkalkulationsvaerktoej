@@ -2,9 +2,12 @@ package org.example.eksamenprojekt.Controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.eksamenprojekt.Model.Role;
+import org.example.eksamenprojekt.Model.Status;
 import org.example.eksamenprojekt.Model.SubTask;
 import org.example.eksamenprojekt.Model.User;
+import org.example.eksamenprojekt.Service.SubProjectService;
 import org.example.eksamenprojekt.Service.SubTaskService;
+import org.example.eksamenprojekt.Service.TaskService;
 import org.example.eksamenprojekt.Service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +22,14 @@ import java.util.Objects;
 public class SubTaskController {
     private final SubTaskService subTaskService;
     private final UserService userService;
+    private final TaskService taskService;
+    private final SubProjectService subProjectService;
 
-    public SubTaskController(SubTaskService subTaskService, UserService userService){
+    public SubTaskController(SubTaskService subTaskService, UserService userService, TaskService taskService, SubProjectService subProjectService){
         this.subTaskService = subTaskService;
         this.userService = userService;
+        this.taskService = taskService;
+        this.subProjectService = subProjectService;
     }
 
     @GetMapping("/task/{taskId}")
@@ -50,7 +57,7 @@ public class SubTaskController {
     @GetMapping("/create/{taskId}")
     public String showCreateSubtaskForm(@PathVariable int taskId, HttpSession session, Model model){
        Role role = (Role) session.getAttribute("role");
-       if (!"PROJECT_LEADER".equals(role)) {
+       if (role !=Role.PROJECT_LEADER) {
            return "redirect:/projects";
        }
 
@@ -59,20 +66,21 @@ public class SubTaskController {
         return "subtask-create";
     }
 
-    @PostMapping("/tasks{taskId}")
+    @PostMapping("/create/{taskId}")
     public String createSubtask(@PathVariable int taskId, @ModelAttribute SubTask subTask, HttpSession session) {
         Role role = (Role) session.getAttribute("role");
-        if (!"PROJECT_LEADER".equals(role)) {
+        if (role != Role.PROJECT_LEADER) {
             return "redirect:/projects";
         }
 
         subTask.setTaskId(taskId);
-        Integer userId = (Integer) session.getAttribute("userId");
-        subTask.setUserId(userId);
 
         subTaskService.addSubTask(subTask);
 
-        return "redirect:/subtasks/task/" + taskId;
+        int subProjectId = taskService.getByTaskId(subTask.getTaskId()).getSubProjectId();
+        int projectId = subProjectService.getBySubProjectId(subProjectId).getProjectId();
+
+        return "redirect:/projects/" + projectId + "/details";
     }
 
     @GetMapping("/update/{subtaskId}")
@@ -86,29 +94,55 @@ public class SubTaskController {
 
     @PostMapping("/update/{subtaskId}")
     public String saveUpdate(@PathVariable int subtaskId, @ModelAttribute SubTask subTask, HttpSession session){
-        Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) return "redirect:/login";
+       // Integer userId = (Integer) session.getAttribute("userId");
+       // if (userId == null) return "redirect:/login";
 
-       SubTask existingSubTask = subTaskService.getBySubTaskId(subTask.getSubTaskId());
-       if (Objects.equals(existingSubTask.getUserId(), userId)) {
-           subTaskService.updateSubTask(subtaskId, subTask);
-       }
+        subTaskService.updateSubTask(subtaskId, subTask);
 
-       return "redirect:/subtasks/task/" + subTask.getTaskId();
+        int subProjectId = taskService.getByTaskId(subTask.getTaskId()).getSubProjectId();
+        int projectId = subProjectService.getBySubProjectId(subProjectId).getProjectId();
+
+        return "redirect:/projects//" + projectId + "/details";
     }
 
     @PostMapping("/delete/{subtaskId}")
     public String deleteSubTask(@PathVariable int subtaskId, HttpSession session){
-        Integer userId = (Integer) session.getAttribute("userId");
+       /* Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";
+
+        */
 
         SubTask subTask = subTaskService.getBySubTaskId(subtaskId);
         int taskId = subTask.getTaskId();
 
-        if (Objects.equals(subTask.getUserId(),userId)){
-            subTaskService.delete(subtaskId);
-        }
+        subTaskService.delete(subtaskId);
 
-        return "redirect:/subtasks/task" + taskId;
+        int subProjectId = taskService.getByTaskId(subTask.getTaskId()).getSubProjectId();
+        int projectId = subProjectService.getBySubProjectId(subProjectId).getProjectId();
+
+        return "redirect:/projects/" + projectId + "/details";
     }
+
+    @PostMapping("/update-status/{subtaskId}")
+    public String updateSubtaskStatus(@PathVariable int subtaskId,
+                                      @RequestParam Status status,
+                                      HttpSession session) {
+
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) return "redirect:/login";
+
+        SubTask subTask = subTaskService.getBySubTaskId(subtaskId);
+
+        subTask.setStatus(status);
+        subTaskService.updateSubTask(subtaskId, subTask);
+
+        int taskId = subTask.getTaskId();
+        int subProjectId = taskService.getByTaskId(subTask.getTaskId()).getSubProjectId();
+        int projectId = subProjectService.getBySubProjectId(subProjectId).getProjectId();
+
+        return "redirect:/projects/" + projectId + "/details";
+    }
+
+
+
 }

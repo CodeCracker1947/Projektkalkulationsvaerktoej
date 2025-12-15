@@ -70,9 +70,9 @@
                 <input type="number" th:field="*{estimatedHours}" step="0.5" required>
 
                 <select th:field="*{status}">
-                    <option value="TO_DO">TODO</option>
-                    <option value="IN_PROGRESS">IN PROGRESS</option>
-                    <option value="DONE">DONE</option>
+                    <option value="ToDo">To Do</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Done">Done</option>
 
                 </select>
 
@@ -91,6 +91,19 @@
                     Status: <span th:text="${task.status}"></span> |
                 </p>
 
+                <div th:if="${role.name() == 'DEVELOPER'}">
+                    <form th:action="@{/tasks/update-status/{taskId}(taskId=${task.taskId})}" method="post">
+
+                        <select name="status">
+                            <option value="ToDo" th:selected="${task.status.name() == 'ToDo'}">To Do</option>
+                            <option value="InProgress" th:selected="${task.status.name() == 'InProgress'}">In Progress</option>
+                            <option value="Done" th:selected="${task.status.name() == 'Done'}">Done</option>
+                        </select>
+
+                        <button type="submit">Opdater status</button>
+                    </form>
+                </div>
+
                 <div th:if="${role.name() == 'PROJECT_LEADER'}">
                     <form th:action="@{/subtasks/create/{id}(id=${task.taskId})}"
                           th:object="${new_subtask}"
@@ -101,31 +114,43 @@
                         <input type="number" th:field="*{estimatedHours}" step="0.5" required>
 
                         <select th:field="*{status}">
-                            <option value="TO_DO">TODO</option>
-                            <option value="IN_PROGRESS">IN PROGRESS</option>
-                            <option value="DONE">DONE</option>
+                            <option value="ToDo">To Do</option>
+                            <option value="InProgress">In Progress</option>
+                            <option value="Done">Done</option>
                         </select>
 
                         <button type="submit">Opret Subtask</button>
                     </form>
                 </div>
 
-                <div th:if="task.subtasks != null">
-                    <div th:each="subtask : ${task.subtaks}" class="subtask">
+                <div th:if="${task.subtasks != null}">
+                    <div th:each="subtask : ${task.subtasks}" class="subtask">
+
                         <strong th:text="${subtask.name}"></strong> |
                         <span th:text="${subtask.description}"></span> |
-                        <span th:text="${subtask.estimatedHours}"></span>timer |
+                        <span th:text="${subtask.estimatedHours}"></span> timer |
                         <span th:text="${subtask.status}"></span>
+
+                        <div th:if="${role.name() == 'DEVELOPER'}">
+                            <form th:action="@{/subtasks/update-status/{id}(id=${subtask.subTaskId})}" method="post">
+
+                                <select name="status">
+                                    <option value="ToDo" th:selected="${subtask.status.name() == 'ToDo'}">To Do</option>
+                                    <option value="InProgress" th:selected="${subtask.status.name() == 'InProgress'}">In Progress</option>
+                                    <option value="Done" th:selected="${subtask.status.name() == 'Done'}">Done</option>
+                                </select>
+
+                                <button type="submit">Opdater</button>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
 
+                <hr>
             </div>
         </div>
-
-        <hr>
-
     </div>
-
 </div>
 
 </body>
