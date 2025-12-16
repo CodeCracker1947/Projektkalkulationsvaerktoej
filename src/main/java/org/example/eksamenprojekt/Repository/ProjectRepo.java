@@ -50,7 +50,7 @@ public class ProjectRepo {
 
 
     public int save(Project project){
-        String sql = "insert into Project (Employee_Id,Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?)";
+        String sql = "insert into Project (Employee_Id, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?)";
         jdbcTemplate.update(sql,
                 project.getUserId(),
                 project.getName(),
