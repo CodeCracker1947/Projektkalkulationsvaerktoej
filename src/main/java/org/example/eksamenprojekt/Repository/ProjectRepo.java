@@ -1,7 +1,6 @@
 package org.example.eksamenprojekt.Repository;
 
 import org.example.eksamenprojekt.Model.Project;
-import org.example.eksamenprojekt.Model.Role;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -29,7 +28,6 @@ public class ProjectRepo {
     public List<Project> findAll(){
         String sql = "select * from Project";
         return jdbcTemplate.query(sql, ProjectRowMapper);
-
     }
 
     public int update(int projectId, Project updated){
@@ -89,6 +87,5 @@ public class ProjectRepo {
         String sql = "SELECT Id FROM Project ORDER BY Id DESC LIMIT 1";
         Integer lastId = jdbcTemplate.queryForObject(sql,Integer.class);
         return lastId != null ? lastId : 0;
-
     }
 }

@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpSession;
 import org.example.eksamenprojekt.Model.Role;
 import org.example.eksamenprojekt.Model.Status;
 import org.example.eksamenprojekt.Model.SubTask;
-import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Service.SubProjectService;
 import org.example.eksamenprojekt.Service.SubTaskService;
 import org.example.eksamenprojekt.Service.TaskService;
@@ -14,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.ListResourceBundle;
-import java.util.Objects;
 
 @RequestMapping("subtasks")
 @Controller
@@ -43,7 +40,6 @@ public class SubTaskController {
         return "subtasks";
 
     }
-
 
     @GetMapping()
     public String showSubtasks(HttpSession session, Model model){
@@ -94,8 +90,6 @@ public class SubTaskController {
 
     @PostMapping("/update/{subtaskId}")
     public String saveUpdate(@PathVariable int subtaskId, @ModelAttribute SubTask subTask, HttpSession session){
-       // Integer userId = (Integer) session.getAttribute("userId");
-       // if (userId == null) return "redirect:/login";
 
         subTaskService.updateSubTask(subtaskId, subTask);
 
@@ -107,10 +101,6 @@ public class SubTaskController {
 
     @PostMapping("/delete/{subtaskId}")
     public String deleteSubTask(@PathVariable int subtaskId, HttpSession session){
-       /* Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) return "redirect:/login";
-
-        */
 
         SubTask subTask = subTaskService.getBySubTaskId(subtaskId);
         int taskId = subTask.getTaskId();
@@ -145,7 +135,4 @@ public class SubTaskController {
 
         return "redirect:/projects/" + projectId + "/details";
     }
-
-
-
 }

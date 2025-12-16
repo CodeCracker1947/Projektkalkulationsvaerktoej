@@ -83,7 +83,6 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project, @RequestParam(required = false) List<Integer> userIds, HttpSession session, RedirectAttributes redirectAttributes) {
         Role role = (Role) session.getAttribute("role");
@@ -145,9 +144,6 @@ public class ProjectController {
         model.addAttribute("new_subtask", new SubTask());
 
         return "project-details";
-
-
-
     }
 
     @PostMapping("/{projectId}/update")

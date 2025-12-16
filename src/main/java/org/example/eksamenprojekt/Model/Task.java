@@ -1,7 +1,6 @@
 package org.example.eksamenprojekt.Model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Task {
@@ -35,7 +34,6 @@ public class Task {
     }
 
     public Task(){
-
     }
 
     public String getName() {

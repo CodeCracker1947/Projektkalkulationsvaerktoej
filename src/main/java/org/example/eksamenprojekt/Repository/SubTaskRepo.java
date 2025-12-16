@@ -2,7 +2,6 @@ package org.example.eksamenprojekt.Repository;
 
 import org.example.eksamenprojekt.Model.Status;
 import org.example.eksamenprojekt.Model.SubTask;
-import org.example.eksamenprojekt.Model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

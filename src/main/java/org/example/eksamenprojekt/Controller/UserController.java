@@ -1,6 +1,5 @@
 package org.example.eksamenprojekt.Controller;
 
-
 import jakarta.servlet.http.HttpSession;
 import org.example.eksamenprojekt.Model.User;
 import org.example.eksamenprojekt.Service.UserService;
@@ -60,5 +59,4 @@ public class UserController {
     public User getUserByEmail(@PathVariable String email) {
         return service.getEmail(email);
     }
-
 }

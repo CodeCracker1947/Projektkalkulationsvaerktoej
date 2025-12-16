@@ -6,6 +6,14 @@ DROP TABLE IF EXISTS Subproject;
 DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS project;
 
+CREATE TABLE Employee (
+                          Id INT AUTO_INCREMENT PRIMARY KEY,
+                          Name VARCHAR(50) NOT NULL,
+                          Email VARCHAR(100) NOT NULL UNIQUE,
+                          Password VARCHAR(255) NOT NULL,
+                          Role ENUM('PROJECT_LEADER', 'DEVELOPER') NOT NULL
+);
+
 CREATE TABLE Project (
                          Id INT AUTO_INCREMENT PRIMARY KEY,
                          Employee_Id Double not null,
@@ -15,14 +23,6 @@ CREATE TABLE Project (
                          EstimatedHours DOUBLE DEFAULT 0
 );
 
-
-CREATE TABLE Employee (
-                          Id INT AUTO_INCREMENT PRIMARY KEY,
-                          Name VARCHAR(50) NOT NULL,
-                          Email VARCHAR(100) NOT NULL UNIQUE,
-                          Password VARCHAR(255) NOT NULL,
-                          Role ENUM('PROJECT_LEADER', 'DEVELOPER') NOT NULL
-);
 
 
 CREATE TABLE EmployeeProject (

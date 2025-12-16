@@ -13,10 +13,6 @@ public class SubProjectService {
         this.repository = repository;
     }
 
-    public List<SubProject> getAll(){
-    return repository.findAll();
-    }
-
     public List <SubProject> getAllSubProjectsByProjectId(int projectId){
     return repository.getAllSubProjectByProjectId(projectId);
     }
@@ -36,10 +32,4 @@ public class SubProjectService {
     public void delete(int subProjectId){
     repository.delete(subProjectId);
     }
-
-    /*public List<SubProject> getAllSubProjectsByUserId (int userId){
-    return repository.findAllByUserID(userId);
-    }
-
-     */
 }

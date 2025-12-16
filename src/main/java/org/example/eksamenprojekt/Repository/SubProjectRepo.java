@@ -1,6 +1,5 @@
 package org.example.eksamenprojekt.Repository;
 
-
 import org.example.eksamenprojekt.Model.SubProject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -76,11 +75,8 @@ public class SubProjectRepo {
       return jdbcTemplate.queryForObject(sql, subProjectRowMapper,subProjectId);
     }
 
-
     public List<SubProject> getAllSubProjectByProjectId(int projectId){
     String sql = "select * from Subproject where Project_Id=?";
     return jdbcTemplate.query(sql, subProjectRowMapper, projectId);
     }
-
-
 }

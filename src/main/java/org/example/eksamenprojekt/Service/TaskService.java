@@ -13,10 +13,6 @@ public class TaskService {
         this.repository = repository;
     }
 
-    public List<Task> getAll(){
-    return repository.findAll();
-    }
-
     public Task getByTaskId(int taskId){
     return repository.findTaskByTaskId(taskId);
     }

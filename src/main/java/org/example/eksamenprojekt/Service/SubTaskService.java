@@ -13,10 +13,6 @@ public class SubTaskService {
         this.repository = repository;
     }
 
-    public List<SubTask> getAll(){
-    return repository.findAll();
-    }
-
     public SubTask getBySubTaskId(int subTaskId){
     return repository.findSubTaskBySubTaskId(subTaskId);
     }

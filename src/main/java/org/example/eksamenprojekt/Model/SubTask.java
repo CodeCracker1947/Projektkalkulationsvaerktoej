@@ -15,7 +15,6 @@ public class SubTask {
         this.description = description;
         this.estimatedHours = estimatedHours;
         this.status = status;
-
     }
 
     public SubTask(String name, String description, double estimatedHours, Status status){
@@ -23,11 +22,9 @@ public class SubTask {
         this.description = description;
         this.estimatedHours = estimatedHours;
         this.status = status;
-
     }
 
     public SubTask(){
-
     }
 
     public String getName() {

@@ -5,10 +5,8 @@ import org.example.eksamenprojekt.Model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import java.awt.*;
 import java.util.List;
-import java.util.Locale;
+
 @Repository
 public class TaskRepo {
     private final JdbcTemplate jdbcTemplate;
@@ -52,7 +50,7 @@ public class TaskRepo {
         return jdbcTemplate.update(sql, taskId);
 
     }
-        // slettet Task_Id og Employee_Id fra String sql
+
     public int save(Task task){
         String sql = "insert into Task (Subproject_Id, Name, Description, Deadline, EstimatedHours, Status) values(?,?,?,?,?,?)";
         return jdbcTemplate.update(sql,
@@ -64,7 +62,7 @@ public class TaskRepo {
                 task.getStatus().name()
         );
     }
-        // ændret "select * from Task where Employee_Id=?"
+
     public List<Task> findAllByUserID(int userId) {
         String sql = "select * from Task where Id in (select Id from EmployeeTask where Employee_Id=?)";
 
@@ -81,7 +79,6 @@ public class TaskRepo {
             return t;
         }, userId);
     }
-
 
     public Task findTaskByTaskId(int taskId) {
         String sql = "select * from Task where Id=?";
