@@ -94,6 +94,7 @@ public class ProjectControllerTest {
 
         Task t = new Task();
         t.setTaskId(30);
+        t.setStatus(Status.ToDo);
 
         when(projectService.getByProjectId(10)).thenReturn(project);
         when(subProjectService.getAllSubProjectsByProjectId(10)).thenReturn(List.of(sp));
