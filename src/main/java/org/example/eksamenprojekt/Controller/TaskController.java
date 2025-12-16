@@ -123,15 +123,22 @@ public class TaskController {
         if (userId == null) return "redirect:/login";
 
         Task task = taskService.getByTaskId(taskId);
-
-        if (!Objects.equals(task.getUserId(), userId)) {
-            return "redirect:/projects";
+        if (task == null) {
+            return "redirect:/project-details";
         }
+
+        /*if (!Objects.equals(task.getUserId(), userId)) {
+            return "redirect:/project-details";
+        }
+
+         */
 
         task.setStatus(status);
         taskService.updateTask(taskId, task);
+        int subProjectId = taskService.getByTaskId(task.getTaskId()).getSubProjectId();
+        int projectId = subProjectService.getBySubProjectId(subProjectId).getProjectId();
 
-        return "redirect:/projects/" + task.getSubProjectId() + "/details";
+        return "redirect:/projects/" + projectId + "/details";
     }
 
 
