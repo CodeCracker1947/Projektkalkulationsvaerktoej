@@ -59,7 +59,7 @@ public class SubTaskRepo {
     }
 
     public List<SubTask> findAllByUserID(int userId) {
-        String sql = "select * from Subtask where Task_Id in (select Task_Id from EmployeeTask where Id=?)";
+        String sql = "select * from Subtask where Task_Id in (select Task_Id from EmployeeTask where Employee_Id=?)";
 
 
         return jdbcTemplate.query(sql,(rs, rowNum) -> {
@@ -76,7 +76,10 @@ public class SubTaskRepo {
 
     public SubTask findSubTaskBySubTaskId(int subTaskId){
     String sql = "select * from Subtask where Id=?";
-    return jdbcTemplate.queryForObject(sql, subTaskRowMapper, subTaskId);
+        List<SubTask> results = jdbcTemplate.query(sql, subTaskRowMapper, subTaskId);
+
+        return results.isEmpty() ? null : results.get(0);
+
     }
 
     public List<SubTask> getAllSubTasksByTaskID(int taskId){

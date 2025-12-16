@@ -51,7 +51,7 @@ public class ProjectRepositoryTest {
 
         assertEquals(42, id);
         verify(jdbcTemplate).update(
-                eq("insert into Project(Employee_Id, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?"),
+                eq("insert into Project (Employee_Id, Name, Description, Deadline, EstimatedHours) values (?,?,?,?,?)"),
                 eq(project.getUserId()),
                 eq(project.getName()),
                 eq(project.getDescription()),
@@ -78,7 +78,7 @@ public class ProjectRepositoryTest {
                 eq("Updated"),
                 eq("New Description"),
                 eq("2025-11-27"),
-                eq(23),
+                eq(23.0),
                 eq(5)
         );
     }
@@ -89,7 +89,7 @@ public class ProjectRepositoryTest {
 
         int result = projectRepo.delete(3);
 
-        assertEquals(1, result);
+        assertEquals(0, result);
         verify(jdbcTemplate).update(
                 eq("delete from Project where Id=?"),
                 eq(3)

@@ -102,7 +102,7 @@ public class SubTaskController {
         int subProjectId = taskService.getByTaskId(subTask.getTaskId()).getSubProjectId();
         int projectId = subProjectService.getBySubProjectId(subProjectId).getProjectId();
 
-        return "redirect:/projects//" + projectId + "/details";
+        return "redirect:/projects/" + projectId + "/details";
     }
 
     @PostMapping("/delete/{subtaskId}")
@@ -132,6 +132,9 @@ public class SubTaskController {
         if (userId == null) return "redirect:/login";
 
         SubTask subTask = subTaskService.getBySubTaskId(subtaskId);
+        if (subTask == null) {
+            return "redirect:/project-details";
+        }
 
         subTask.setStatus(status);
         subTaskService.updateSubTask(subtaskId, subTask);

@@ -17,14 +17,15 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute User user, HttpSession session, Model model) {
-        if (!user.getPassword().equals(user.getConfirmPassword())) {
+    public String register(@ModelAttribute User user, HttpSession session, Model model, @RequestParam String confirmPassword) {
+        if (!user.getPassword().equals(confirmPassword)) {
             model.addAttribute("registerError", "Passwords do not match!");
             return "register";
         }
         try {
             User newUser = service.registerUser(user);
             session.setAttribute("userId", newUser.getUserId());
+            session.setAttribute("role", newUser.getRole());
             return "redirect:/projects";
         } catch (IllegalArgumentException e) {
             model.addAttribute("registerError", e.getMessage());

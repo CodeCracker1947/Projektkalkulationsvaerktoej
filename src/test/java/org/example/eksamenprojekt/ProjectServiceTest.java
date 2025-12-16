@@ -45,7 +45,7 @@ public class ProjectServiceTest {
 
         List<Project> result = projectService.getAll();
 
-        assertEquals(2, result.size());
+        assertEquals(projects.size(), result.size());
         verify(projectRepo).findAll();
     }
 

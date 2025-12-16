@@ -37,7 +37,9 @@ public class SubProjectService {
     repository.delete(subProjectId);
     }
 
-    public List<SubProject> getAllSubProjectsByUserId (int userId){
+    /*public List<SubProject> getAllSubProjectsByUserId (int userId){
     return repository.findAllByUserID(userId);
     }
+
+     */
 }

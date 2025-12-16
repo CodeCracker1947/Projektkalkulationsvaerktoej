@@ -36,7 +36,7 @@
 
             <input type="text" th:field="*{name}" placeholder="Navn" required>
             <textarea th:field="*{description}" placeholder="Beskrivelse"></textarea>
-            <input type="number" th:field="*{estimatedHour}" step="0.5" required>
+            <input type="number" th:field="*{estimatedHour}" step="0.5" required> <span>timer</span>
 
             <button type="submit">Opret delprojekt</button>
         </form>
@@ -55,7 +55,7 @@
         <h3 th:text="${subproject.name}"></h3>
         <p>
             <span th:text="${subproject.description}"></span><br>
-            Deadline: <span th:text="${subproject.deadline}"></span> |
+            Projekt deadline: <span th:text="${project.deadline}"></span> |
             Timer: <span th:text="${subproject.estimatedHour}"></span>
         </p>
 
@@ -64,11 +64,19 @@
                   th:object="${new_task}"
                   method="post">
 
+                <label>Task navn:</label><br>
                 <input type="text" th:field="*{name}" placeholder="Task navn" required>
-                <textarea th:field="*{description}" placeholder="Beskrivelse"></textarea>
-                <input type="date" th:field="*{deadline}" required>
-                <input type="number" th:field="*{estimatedHours}" step="0.5" required>
 
+                <label>Beskrivelse:</label><br>
+                <textarea th:field="*{description}" placeholder="Beskrivelse"></textarea>
+
+                <label>Deadline:</label><br>
+                <input type="date" th:field="*{deadline}" required>
+
+                <label>Estimeret tidsforbrug:</label><br>
+                <input type="number" th:field="*{estimatedHours}" step="0.5" required> <span>timer</span>
+
+                <label>Status:</label><br>
                 <select th:field="*{status}">
                     <option value="ToDo">To Do</option>
                     <option value="InProgress">In Progress</option>
@@ -109,10 +117,16 @@
                           th:object="${new_subtask}"
                           method="post">
 
+                        <label>navn:</label><br>
                         <input type="text" th:field="*{name}" placeholder="Subtask navn" required>
-                        <textarea th:field="*{description}" placeholder="Beskrivelse"></textarea>
-                        <input type="number" th:field="*{estimatedHours}" step="0.5" required>
 
+                        <label>Beskrivelse:</label><br>
+                        <textarea th:field="*{description}" placeholder="Beskrivelse"></textarea>
+
+                        <label>Estimeret tidsforbrug:</label><br>
+                        <input type="number" th:field="*{estimatedHours}" step="0.5" required> <span>timer</span>
+
+                        <label>Status:</label><br>
                         <select th:field="*{status}">
                             <option value="ToDo">To Do</option>
                             <option value="InProgress">In Progress</option>
@@ -132,7 +146,7 @@
                         <span th:text="${subtask.status}"></span>
 
                         <div th:if="${role.name() == 'DEVELOPER'}">
-                            <form th:action="@{/subtasks/update-status/{id}(id=${subtask.subTaskId})}" method="post">
+                            <form th:action="@{/subtasks/update-status/{subtaskId}(subtaskId=${subtask.subTaskId})}" method="post">
 
                                 <select name="status">
                                     <option value="ToDo" th:selected="${subtask.status.name() == 'ToDo'}">To Do</option>

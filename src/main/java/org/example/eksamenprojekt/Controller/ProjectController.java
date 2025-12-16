@@ -151,13 +151,13 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/update")
-    public String saveUpdate(@PathVariable int projectId, @ModelAttribute Project model,HttpSession session) {
+    public String saveUpdate(@PathVariable int projectId, @ModelAttribute Project project,HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) return "redirect:/login";
 
         Project existingProject = projectService.getByProjectId(projectId);
         if (Objects.equals(existingProject.getUserId(), userId)) {
-            projectService.updateProject(projectId, model);
+            projectService.updateProject(projectId, project);
         }
 
         return "redirect:/projects";

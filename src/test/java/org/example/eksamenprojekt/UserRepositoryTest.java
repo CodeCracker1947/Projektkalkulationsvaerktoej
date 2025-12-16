@@ -75,7 +75,7 @@ public class UserRepositoryTest {
         User newUser = new User(0, "NewUser1", "newUser1@hotmail.dk", "444", Role.DEVELOPER);
         User savedUser = new User(5, "NewUser1", "newUser1@hotmail.dk", "444", Role.DEVELOPER);
 
-        doNothing().when(jdbcTemplate).update(anyString(), any(), any(), any(), any());
+        when(jdbcTemplate.update(anyString(), any(), any(), any(), any())).thenReturn(1);
 
 
         when(jdbcTemplate.queryForObject(
@@ -88,7 +88,7 @@ public class UserRepositoryTest {
 
         assertNotNull(result);
         assertEquals(5, result.getUserId());
-        assertEquals("New", result.getName());
+        assertEquals("NewUser1", result.getName());
 
         verify(jdbcTemplate, times(1)).update(anyString(), any(), any(), any(), any());
         verify(jdbcTemplate, times(1)).queryForObject(anyString(), any(RowMapper.class), eq("newUser1@hotmail.dk"));

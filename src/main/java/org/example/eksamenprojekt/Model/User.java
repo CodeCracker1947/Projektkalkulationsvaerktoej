@@ -7,8 +7,6 @@ public class User {
     private String email;
     private String password;
 
-    private transient String confirmPassword;
-
     public User(int userId, String name, String email, String password, Role role){
         this.userId = userId;
         this.name = name;
@@ -73,13 +71,5 @@ public class User {
 
     public void setPassword(String password){
         this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 }
